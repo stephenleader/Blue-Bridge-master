@@ -1,0 +1,135 @@
+C51 COMPILER V9.53.0.0   MAIN                                                              03/11/2022 18:13:47 PAGE 1   
+
+
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\Keil MDK\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include"lcd.h"
+   3          #include"temp.h"
+   4          
+   5          uchar CNCHAR[6] = "摄氏度";
+   6          void LcdDisplay(int);
+   7          void UsartConfiguration();
+   8          
+   9          
+  10          void main()
+  11          {
+  12   1        UsartConfiguration();
+  13   1        LcdInit();  
+  14   1        LcdWriteCom(0x88);
+  15   1        LcdWriteData('C'); 
+  16   1        while(1)
+  17   1        {
+  18   2          LcdDisplay(Ds18b20ReadTemp());
+  19   2        }
+  20   1      }
+  21          
+  22          void LcdDisplay(int temp)    {
+  23   1          
+  24   1          unsigned char i, datas[] = {0, 0, 0, 0, 0}; 
+  25   1          float tp;  
+  26   1        if(temp< 0)       
+  27   1          {
+  28   2            LcdWriteCom(0x80);    
+  29   2          SBUF='-';
+  30   2          while(!TI);     
+  31   2          TI=0;
+  32   2            LcdWriteData('-');
+  33   2          temp=temp-1;
+  34   2          temp=~temp;
+  35   2          tp=temp;
+  36   2          temp=tp*0.0625*100+0.5; 
+  37   2          }
+  38   1        else
+  39   1          {     
+  40   2            LcdWriteCom(0x80);
+  41   2            LcdWriteData('+');
+  42   2          SBUF='+';
+  43   2          while(!TI);
+  44   2          TI=0;
+  45   2          tp=temp;
+  46   2          temp=tp*0.0625*100+0.5; 
+  47   2        }
+  48   1        datas[0] = temp / 10000;
+  49   1        datas[1] = temp % 10000 / 1000;
+  50   1        datas[2] = temp % 1000 / 100;
+  51   1        datas[3] = temp % 100 / 10;
+  52   1        datas[4] = temp % 10;
+  53   1      
+  54   1        LcdWriteCom(0x82);
+  55   1        LcdWriteData('0'+datas[0]);
+C51 COMPILER V9.53.0.0   MAIN                                                              03/11/2022 18:13:47 PAGE 2   
+
+  56   1        SBUF = '0'+datas[0];
+  57   1        while (!TI);
+  58   1        TI = 0;
+  59   1        
+  60   1        LcdWriteCom(0x83);
+  61   1        LcdWriteData('0'+datas[1]); 
+  62   1        SBUF = '0'+datas[1];
+  63   1        while (!TI);
+  64   1        TI = 0;
+  65   1      
+  66   1        LcdWriteCom(0x84);
+  67   1        LcdWriteData('0'+datas[2]);
+  68   1        SBUF = '0'+datas[2];
+  69   1        while (!TI);
+  70   1        TI = 0;
+  71   1      
+  72   1        LcdWriteCom(0x85);
+  73   1        LcdWriteData('.');
+  74   1        SBUF = '.';
+  75   1        while (!TI);
+  76   1        TI = 0;
+  77   1      
+  78   1        LcdWriteCom(0x86);
+  79   1        LcdWriteData('0'+datas[3]);
+  80   1        SBUF = '0'+datas[3];
+  81   1        while (!TI);
+  82   1        TI = 0;
+  83   1      
+  84   1        LcdWriteCom(0x87);
+  85   1        LcdWriteData('0'+datas[4]);
+  86   1        SBUF = '0'+datas[4];
+  87   1        while (!TI);
+  88   1        TI = 0;
+  89   1        for(i=0; i<6; i++)
+  90   1        {
+  91   2          SBUF = CNCHAR[i];
+  92   2          while (!TI);
+  93   2          TI = 0;
+  94   2        } 
+  95   1      }
+  96          
+  97          
+  98          void UsartConfiguration()
+  99          {
+ 100   1        SCON=0X50;
+ 101   1        TMOD=0X20;
+ 102   1        PCON=0X80;
+ 103   1        TH1=0XF3;
+ 104   1        TL1=0XF3;
+ 105   1      //  ES=1;           //打开接收中断
+ 106   1      //  EA=1;           //打开总中断
+ 107   1        TR1=1;
+ 108   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    437    ----
+   CONSTANT SIZE    =      5    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6      11
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.53.0.0   MAIN                                                              03/11/2022 18:13:47 PAGE 3   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

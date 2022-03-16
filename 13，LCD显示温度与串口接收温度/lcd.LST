@@ -1,0 +1,137 @@
+C51 COMPILER V9.53.0.0   LCD                                                               03/11/2022 18:13:47 PAGE 1   
+
+
+C51 COMPILER V9.53.0.0, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN lcd.OBJ
+COMPILER INVOKED BY: D:\Keil MDK\C51\BIN\C51.EXE lcd.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include"lcd.h"
+   2          
+   3          void Lcd1602_Delay1ms(uint c) 
+   4          {
+   5   1          uchar a,b;
+   6   1        for (; c>0; c--)
+   7   1        {
+   8   2           for (b=199;b>0;b--)
+   9   2           {
+  10   3              for(a=1;a>0;a--);
+  11   3           }      
+  12   2        }
+  13   1            
+  14   1      }
+  15          
+  16          #ifndef   LCD1602_4PINS 
+  17          void LcdWriteCom(uchar com)  
+  18          {
+  19   1        LCD1602_E = 0; 
+  20   1        LCD1602_RS = 0; 
+  21   1        LCD1602_RW = 0; 
+  22   1        
+  23   1        LCD1602_DATAPINS = com;
+  24   1        Lcd1602_Delay1ms(1);
+  25   1      
+  26   1        LCD1602_E = 1;
+  27   1        Lcd1602_Delay1ms(5);
+  28   1        LCD1602_E = 0;
+  29   1      }
+  30          #else 
+              void LcdWriteCom(uchar com) 
+              {
+                LCD1602_E = 0;
+                LCD1602_RS = 0;
+                LCD1602_RW = 0;
+              
+                LCD1602_DATAPINS = com; //由于4位的接线是接到P0口的高四位，所以传送高四位不用改
+                Lcd1602_Delay1ms(1);
+              
+                LCD1602_E = 1;
+                Lcd1602_Delay1ms(5);
+                LCD1602_E = 0;
+              
+              //  Lcd1602_Delay1ms(1);
+                LCD1602_DATAPINS = com << 4;
+                Lcd1602_Delay1ms(1);
+              
+                LCD1602_E = 1;
+                Lcd1602_Delay1ms(5);
+                LCD1602_E = 0;
+              }
+              #endif
+  53                 
+  54          #ifndef   LCD1602_4PINS      
+  55          void LcdWriteData(uchar dat)      
+C51 COMPILER V9.53.0.0   LCD                                                               03/11/2022 18:13:47 PAGE 2   
+
+  56          {
+  57   1        LCD1602_E = 0;  
+  58   1        LCD1602_RS = 1; 
+  59   1        LCD1602_RW = 0; 
+  60   1      
+  61   1        LCD1602_DATAPINS = dat;
+  62   1        Lcd1602_Delay1ms(1);
+  63   1      
+  64   1        LCD1602_E = 1;
+  65   1        Lcd1602_Delay1ms(5);
+  66   1        LCD1602_E = 0;
+  67   1      }
+  68          #else
+              void LcdWriteData(uchar dat)
+              {
+                LCD1602_E = 0;    
+                LCD1602_RS = 1;
+                LCD1602_RW = 0; 
+              
+                LCD1602_DATAPINS = dat;
+                Lcd1602_Delay1ms(1);
+              
+                LCD1602_E = 1;
+                Lcd1602_Delay1ms(5);
+                LCD1602_E = 0;
+              
+                LCD1602_DATAPINS = dat << 4;
+                Lcd1602_Delay1ms(1);
+              
+                LCD1602_E = 1;
+                Lcd1602_Delay1ms(5);
+                LCD1602_E = 0;
+              }
+              #endif
+  90               
+  91          #ifndef   LCD1602_4PINS
+  92          void LcdInit()  //LCD初始化
+  93          {
+  94   1        LcdWriteCom(0x38);
+  95   1        LcdWriteCom(0x0c);
+  96   1        LcdWriteCom(0x06);
+  97   1        LcdWriteCom(0x01);
+  98   1        LcdWriteCom(0x80);
+  99   1      }
+ 100          #else
+              void LcdInit()  
+              {
+                LcdWriteCom(0x32);   //将8位总线转为4位总线
+                LcdWriteCom(0x28);   //在四位线下的初始化
+                LcdWriteCom(0x0c); 
+                LcdWriteCom(0x06);
+                LcdWriteCom(0x01);  //清屏
+                LcdWriteCom(0x80);
+              }
+              #endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     87    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+C51 COMPILER V9.53.0.0   LCD                                                               03/11/2022 18:13:47 PAGE 3   
+
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
