@@ -1,0 +1,63 @@
+C51 COMPILER V9.54   MAIN                                                                  02/24/2022 21:16:48 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\#大一\单片机（大一寒假）\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRIN
+                    -T(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          
+   3          #define SEG P0;
+   4          #define KEYPAD P1;
+   5          
+   6          typedef unsigned char u8;
+   7          typedef unsigned int u16;
+   8          
+   9          void delay_ms(u16 x);//延时函数声明
+  10          void led_display(u8 number);//数码管显示，注意格式使用字符型
+  11          u8 keypad_scan(void);
+  12          //函数一般都有返回值，void什么都不返回，这里我们要返回一个u8
+  13          sbit key = P2^0;
+  14          sbit led = P3^0;
+  15          
+  16          
+  17          //重要*
+  18          void main()
+  19          {
+  20   1          u8 num;
+  21   1          while(1)
+  22   1          {
+  23   2              switch(keypad_scan())//这里扫描矩阵键盘
+  24   2              //当number为0的按键，即k0按下时
+  25   2              //，num=0
+  26   2              {
+  27   3              case 0xee:num = 0; break;
+  28   3              case 0xed:num = 1; break;
+  29   3              case 0xeb:num = 2; break;
+  30   3              case 0xe7:num = 3; break;
+  31   3              default: break;
+  32   3              }
+  33   2      }
+  34   1      
+  35   1      
+  36   1      void delay_ms(u16 x)
+*** ERROR C141 IN LINE 36 OF main.c: syntax error near 'void'
+  37   1      {
+  38   1        u16 i,j;
+  39   1        for ( i = x ; i > 0 ; i-- )
+  40   1        {
+  41   2          for (j = 110 ; j > 0 ; j-- )
+  42   2          {
+  43   3          
+  44   3          }
+  45   2        }
+  46   1      }
+  47          void led_display(u8 number)
+  48          {
+  49   1          SEG = seg_tab[number];
+  50   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

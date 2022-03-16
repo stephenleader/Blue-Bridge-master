@@ -1,0 +1,173 @@
+C51 COMPILER V9.54   MAIN                                                                  02/27/2022 16:27:44 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\#大一\单片机（大一寒假）\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRIN
+                    -T(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          
+   3          sbit HC138_A = P2^5;
+   4          sbit HC138_B = P2^6;
+   5          sbit HC138_C = P2^7;
+   6          
+   7          
+   8          
+   9          //函数
+  10          void Delay(unsigned int t)
+  11          {
+  12   1          while(t--);
+  13   1          while(t--);
+  14   1      }
+  15          
+  16          void InitHC138(unsigned char n)
+  17          {
+  18   1          switch(n)
+  19   1          {
+  20   2              
+  21   2          case 4:
+  22   2              HC138_C = 1;  //选Y4输出低电平
+  23   2              HC138_B = 0;
+  24   2              HC138_A = 0;
+  25   2              break;
+  26   2          
+  27   2          case 5:
+  28   2              HC138_C = 1;
+  29   2              HC138_B = 0;  //选Y5输出低电平
+  30   2              HC138_A = 1;
+  31   2              break;
+  32   2              
+  33   2          case 6:
+  34   2              HC138_C = 1;
+  35   2              HC138_B = 1;  //选Y6输出低电平
+  36   2              HC138_A = 0;
+  37   2              break;
+  38   2          
+  39   2          
+  40   2          case 7:
+  41   2              HC138_C = 1;
+  42   2              HC138_B = 1;  //选Y7输出低电平
+  43   2              HC138_A = 1;
+  44   2              break;
+  45   2              }
+  46   1      }
+  47          
+  48          void OutPut0(unsigned char a, unsigned char b)
+  49          {
+  50   1          InitHC138(a);
+  51   1          P0 = b;
+  52   1      }
+  53          
+  54          
+C51 COMPILER V9.54   MAIN                                                                  02/27/2022 16:27:44 PAGE 2   
+
+  55          void LEDRunning()
+  56          {
+  57   1          unsigned char i;
+  58   1          //HC138_C = 1;
+  59   1          //HC138_B = 0;
+  60   1          //HC138_A = 0;
+  61   1          //y4非为高电平
+  62   1          //---换为函数（优化）
+  63   1          //InitHC138(4);
+  64   1          
+  65   1          //闪烁三下
+  66   1          for(i = 0 ; i < 3 ; i++ )
+  67   1          {
+  68   2              OutPutP0(4,0x00);
+*** WARNING C206 IN LINE 68 OF main.c: 'OutPutP0': missing function-prototype
+*** ERROR C267 IN LINE 68 OF main.c: 'OutPutP0': requires ANSI-style prototype
+  69   2              //P0 = 0x00;
+  70   2              //0X00对于IO口来说是点亮,低电平然后取了一次非
+  71   2              Delay(60000);
+  72   2              Delay(60000);
+  73   2      
+  74   2              OutPutP0(4,0xff);
+  75   2              //P0 = 0xff;
+  76   2              //0xff对于IO口是熄灭
+  77   2              Delay(60000);
+  78   2              Delay(60000);
+  79   2          }
+  80   1          
+  81   1          for(i = 1 ; i <= 8 ; i++ )
+  82   1          {
+  83   2          //0xff灭，全灭；0x00亮；=1高电平；=0低电平
+  84   2          OutPut(4,(0xff<<i));
+  85   2              //P0 = 0xff << i;
+  86   2              //流水灯一定要延时，不然看不到效果
+  87   2              Delay(60000);
+  88   2          } 
+  89   1          
+  90   1      
+  91   1          //点亮之后，由题意，继电器吸合，即让P0^4对应的继电器导通，P0^4 = 1
+  92   1          /*HC138_C = 1;
+  93   1          HC138_B = 0;
+  94   1          HC138_A = 1;
+  95   1          //二进制0001 0000 ,P0^4刚好为1
+  96   1          //---换为函数（优化）*/
+  97   1          //InitHC138(5);
+  98   1          //P0 = 0x10;
+  99   1          OutPutP0(5,0x10);
+ 100   1          Delay(60000);
+ 101   1          Delay(60000);
+ 102   1          //P0 = 0x00;关掉
+ 103   1          OutPutP0(5,0x00);
+ 104   1          
+ 105   1          
+ 106   1          //改让y4输出低电平,因为前面改动过C,B,A，所以这里要重新写
+ 107   1          /*HC138_C = 1;
+ 108   1          HC138_B = 0;
+ 109   1          HC138_A = 0;*/
+ 110   1          //---换为函数（优化）
+ 111   1          InitHC138(4);
+ 112   1          for( i = 1 ; i <= 8 ; i++ )
+ 113   1          {
+ 114   2              P0 = ~(0xff << i);
+C51 COMPILER V9.54   MAIN                                                                  02/27/2022 16:27:44 PAGE 3   
+
+ 115   2              Delay(60000);
+ 116   2          }
+ 117   1          
+ 118   1          //继电器吸合之后，根据题意，蜂鸣器对应接口P0^6应该为1
+ 119   1          //，叫一会儿
+ 120   1          /*HC138_C = 1;
+ 121   1          HC138_B = 0;
+ 122   1          HC138_A = 1;//y5输出低电平*/
+ 123   1          //---换为函数（优化）
+ 124   1          InitHC138(5);
+ 125   1          P0 = 0x40;//注意0100 0000对应的是P0^7,P0^6....
+ 126   1          Delay(60000);
+ 127   1          Delay(60000);
+ 128   1          P0 = 0x00;//关掉
+ 129   1          
+ 130   1      }
+ 131          
+ 132          //关掉无关设备的函数
+ 133          void InitSystem()
+ 134          {
+ 135   1          HC138_C = 1;
+ 136   1          HC138_B = 0;
+ 137   1          HC138_A = 1;
+ 138   1          //Y5输出低电平,LE才能为1，可以影响到接有蜂鸣器和继电器的控制器
+ 139   1          
+ 140   1          P0 = 0X00;
+ 141   1          //P0^0~P0^7都受P0影响
+ 142   1          
+ 143   1      }
+ 144          
+ 145          
+ 146          //主函数
+ 147          void main()
+ 148          {
+ 149   1          InitSystem();
+ 150   1          while(1)
+ 151   1          {
+ 152   2              LEDRunning();//主函数内调用函数
+ 153   2          }
+ 154   1      }
+ 155          
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  1 ERROR(S)

@@ -1,0 +1,75 @@
+C51 COMPILER V9.54   MAIN                                                                  03/12/2022 17:29:35 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ma
+                    -in.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          
+   3          //寄存器定义,新增辅助寄存器
+   4          sfr AUXR = 0x8e;
+   5          
+   6          unsigned char urdat;
+   7          
+   8          void SendByte(unsigned char dat);
+   9          
+  10          void InitUart()//串口初始化，SM1,SM2采用模式二
+  11          {
+  12   1        //产品手册上有,用定时器1产生波特率
+  13   1        TMOD = 0x20;
+  14   1        TH1 = 0xfd; //大小写均可
+  15   1        TL0 = 0xfd;
+  16   1        TR1 = 1;
+  17   1        
+  18   1        SCON = 0x50; //记住就行
+  19   1        AUXR = 0x00; //B0 = 0时，独立波特率发生器才能每12个时钟计数一次
+  20   1        
+  21   1        ES = 1;
+  22   1        EA = 1;
+  23   1      }
+  24          
+  25          //4号为串口中断,0号是外部中断0，1号是定时器0，2号是外部中断1，3号是定时器1
+  26          void ServiceUart() interrupt 1
+  27          {
+  28   1        if(RI == 1)//处理数据接收情况
+  29   1        {
+  30   2          RI = 0;//必须人工清零
+  31   2          urdat = SBUF;//读出SBUF
+  32   2          SendByte(urdat);
+  33   2        }
+  34   1      }
+  35          
+  36          //发送字节函数，用查询方式
+  37          void SendByte(unsigned char dat)
+  38          {
+  39   1        SBUF = dat;
+  40   1        while(TI == 0);//发送完变成1
+  41   1        TI = 0;//手动清零
+  42   1      }
+  43          
+  44          void main()
+  45          {
+  46   1        InitUart();
+  47   1      
+  48   1        while(1);
+  49   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    104    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.54   MAIN                                                                  03/12/2022 17:29:35 PAGE 2   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

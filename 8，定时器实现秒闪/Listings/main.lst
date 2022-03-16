@@ -1,0 +1,105 @@
+C51 COMPILER V9.54   MAIN                                                                  03/06/2022 19:38:20 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ma
+                    -in.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          
+   3          //注意区别
+   4          //typedef 类型 变量名
+   5          //#define 变量名 类型
+   6          #define u16 unsigned int;
+   7          typedef unsigned char u8;
+   8          
+   9          sbit L1 = P0^0;
+  10          sbit L8 = P0^7;
+  11          
+  12          sbit HC573_C = P2^7;
+  13          sbit HC573_B = P2^6;
+  14          sbit HC573_A = P2^5;
+  15          
+  16          void SelectHC573(u8 n)
+  17          {
+  18   1        switch(n)
+  19   1        {
+  20   2          case 4:
+  21   2            HC573_C = 1;
+  22   2            HC573_B = 0;
+  23   2            HC573_A = 0;
+  24   2          break;
+  25   2          
+  26   2          case 5:
+  27   2            HC573_C = 1;
+  28   2            HC573_B = 0;
+  29   2            HC573_A =1;
+  30   2          break;
+  31   2        }
+  32   1      }
+  33          
+  34          void InitTimer0()//初始化定时器0
+  35          {
+  36   1        SelectHC573(5);
+  37   1        P0=0x00;
+  38   1        SelectHC573(4);
+  39   1        P0=0xff;
+  40   1        
+  41   1        //TMOD定时/计数器控制寄存器
+  42   1        TMOD = 0x01;
+  43   1        TH0 = (65535 - 50000) / 256;
+  44   1        TL0 = (65535 - 50000) % 256;
+  45   1        
+  46   1        ET0 = 1;//选择打开定时器0中断，ET0或者ET1置1
+  47   1        EA = 1;//打开总中断开关
+  48   1        TR0 = 1;//打开定时/计数器T0启动器，即TR0或者TR1置1
+  49   1      }
+  50          
+  51          u8 count = 0;
+  52          u8 count1 = 0;
+  53          void ServiceTimer0() interrupt 1
+  54          {
+C51 COMPILER V9.54   MAIN                                                                  03/06/2022 19:38:20 PAGE 2   
+
+  55   1        //重新配置初值
+  56   1        TH0 = (65535 - 50000) / 256;
+  57   1        TL0 = (65535 - 50000) % 256;
+  58   1        
+  59   1        count++;
+  60   1        count1++;
+  61   1        if(count % 10 == 0 )//L1:10X5ms闪一次
+  62   1        {
+  63   2          L1=~L1;
+  64   2          count = 0;
+  65   2        }
+  66   1        if(count1 == 100)//L8:100X5ms闪一次
+  67   1        {
+  68   2          L8 = ~L8;
+  69   2          count1 = 0;
+  70   2        }
+  71   1      }
+  72          void main()
+  73          {
+  74   1        InitTimer0();
+  75   1        while(1)
+  76   1        {
+  77   2          
+  78   2        }
+  79   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    105    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

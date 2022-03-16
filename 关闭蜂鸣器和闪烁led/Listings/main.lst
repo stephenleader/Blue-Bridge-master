@@ -1,0 +1,43 @@
+C51 COMPILER V9.54   MAIN                                                                  02/23/2022 22:05:46 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\#大一\单片机（大一寒假）\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRIN
+                    -T(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <STC15F2K60S2.H>
+   2          void close()
+   3          {
+   4   1         P2 = 0XA0;//??Y5C
+   5   1         P06 = 0;//?????
+   6   1         P2 = 0X00;//??Y5C
+   7   1      
+   8   1         P2 = 0X80;//??Y4C
+   9   1         P0 = 0XFF;//??LED
+  10   1         P2 = 0X00;//??Y4C
+  11   1      }  
+  12          void main()
+  13          {
+  14   1        close();
+  15   1        while(1)
+  16   1        {
+  17   2          
+  18   2        }
+  19   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     22    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

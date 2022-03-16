@@ -1,0 +1,210 @@
+C51 COMPILER V9.54   MAIN                                                                  03/08/2022 21:40:03 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ma
+                    -in.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          
+   3          sbit HC573_C = P2^7;
+   4          sbit HC573_B = P2^6;
+   5          sbit HC573_A = P2^5;
+   6          
+   7          sbit S4 = P3^3;
+   8          sbit S5 = P3^2;
+   9          
+  10          //分钟
+  11          unsigned char t_fen = 0;
+  12          
+  13          //秒
+  14          unsigned char t_m = 0;
+  15            
+  16          //毫秒
+  17          unsigned char t_005ms = 0;
+  18          
+  19          //数码管码值
+  20          unsigned char code SMG_NoDot[18] = 
+  21          {
+  22            0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,
+  23            0x80,0x90,0x88,0x80,0xc6,0xc0,0x86,0x8e,
+  24            0xbf,0x7f
+  25          };
+  26          
+  27          //按键延时
+  28          void DelayKey(unsigned int t)
+  29          {
+  30   1        while(t--);
+  31   1      }
+  32          //数码管延时
+  33          void Delay(unsigned int t)
+  34          {
+  35   1          while(t--);
+  36   1      }
+  37          
+  38          void SelectHC573(unsigned char n)
+  39          {
+  40   1        switch(n)
+  41   1        {
+  42   2          case 4:
+  43   2            HC573_C = 1;
+  44   2            HC573_B = 0;
+  45   2            HC573_A = 0;
+  46   2          break;
+  47   2          
+  48   2          case 5:
+  49   2            HC573_C = 1;
+  50   2            HC573_B = 0;
+  51   2            HC573_A = 1;
+  52   2          break;
+  53   2          
+  54   2          case 6:
+C51 COMPILER V9.54   MAIN                                                                  03/08/2022 21:40:03 PAGE 2   
+
+  55   2            HC573_C = 1;
+  56   2            HC573_B = 1;
+  57   2            HC573_A = 0;
+  58   2          break;
+  59   2          
+  60   2          case 7:
+  61   2            HC573_C = 1;
+  62   2            HC573_B = 1;
+  63   2            HC573_A = 1;
+  64   2          break;
+  65   2        }
+  66   1      }
+  67          
+  68          void InitSystem()
+  69          {
+  70   1        SelectHC573(5);
+  71   1        P0 = 0x00;
+  72   1        SelectHC573(4);
+  73   1        P0 = 0xff;
+  74   1      }
+  75          
+  76          void DisplaySMG_Bit(unsigned char value,unsigned char pos)
+  77          {
+  78   1        SelectHC573(6);
+  79   1        P0 = 0x01 << pos;//左移符号
+  80   1        SelectHC573(7);
+  81   1        P0 = value;
+  82   1      }
+  83          
+  84          //时间显示
+  85          void DisplayTime()
+  86          {
+  87   1        //毫秒段
+  88   1        DisplaySMG_Bit(SMG_NoDot[t_005ms % 10],7);
+  89   1        Delay(500);
+  90   1        DisplaySMG_Bit(SMG_NoDot[t_005ms / 10],6);
+  91   1        Delay(500);
+  92   1        //数码管显示分隔符
+  93   1        DisplaySMG_Bit(SMG_NoDot[16],5);
+  94   1        Delay(500);
+  95   1        
+  96   1        
+  97   1        //秒显示
+  98   1        DisplaySMG_Bit(SMG_NoDot[t_m % 10],4);
+  99   1        Delay(500);
+ 100   1        DisplaySMG_Bit(SMG_NoDot[t_m / 10],3);
+ 101   1        Delay(500);//500刚好一秒
+ 102   1        //数码管显示分隔符
+ 103   1        DisplaySMG_Bit(SMG_NoDot[16],2);
+ 104   1        Delay(500);
+ 105   1        
+ 106   1        //分钟显示
+ 107   1        DisplaySMG_Bit(SMG_NoDot[t_fen % 10],1);
+ 108   1        Delay(500);
+ 109   1        DisplaySMG_Bit(SMG_NoDot[t_fen / 10],0);
+ 110   1        Delay(500);
+ 111   1      }
+ 112          
+ 113          //定时器函数
+ 114          void InitTimer0()
+ 115          {
+ 116   1          TMOD = 0x01;
+C51 COMPILER V9.54   MAIN                                                                  03/08/2022 21:40:03 PAGE 3   
+
+ 117   1        //50ms为间隔定时
+ 118   1        TH0 = (65535 - 50000) / 256;
+ 119   1        TL0 = (65535 - 50000) % 256;
+ 120   1        
+ 121   1        ET0 = 1;
+ 122   1        EA = 1;
+ 123   1        TR0 = 1;
+ 124   1      }
+ 125          
+ 126          void ServiceTimer0() interrupt 1
+ 127          {
+ 128   1        TH0 = (65535 - 50000) / 256;
+ 129   1        TL0 = (65535 - 50000) % 256;
+ 130   1        
+ 131   1        t_005ms++;
+ 132   1        if(t_005ms == 20) //20x50=1000ms=1s
+ 133   1        {
+ 134   2          t_m++;
+ 135   2          t_005ms = 0;
+ 136   2        }
+ 137   1        if(t_m == 60)
+ 138   1        {
+ 139   2          t_fen++;
+ 140   2          t_m = 0;
+ 141   2        }
+ 142   1        if(t_fen == 99)//100 cannot be displayed
+ 143   1        {
+ 144   2          t_fen = 0;
+ 145   2        }
+ 146   1      }
+ 147          
+ 148          void ScanKeys()
+ 149          {
+ 150   1        if(S4 == 0 )  //秒表启动与暂停
+ 151   1        {
+ 152   2          DelayKey(100);
+ 153   2          if(S4 == 0)
+ 154   2          {
+ 155   3            TR0 = ~TR0;//取反启动开关
+ 156   3          }
+ 157   2        }
+ 158   1        
+ 159   1        if(S5 == 0)  //所有示数清零
+ 160   1        {
+ 161   2          DelayKey(100);
+ 162   2          if(S5 == 0)
+ 163   2          {
+ 164   3            t_fen= 0;
+ 165   3            t_005ms = 0;
+ 166   3            t_m = 0;
+ 167   3            
+ 168   3          }
+ 169   2        }
+ 170   1      }
+ 171          void main()
+ 172          {
+ 173   1        InitSystem();
+ 174   1        InitTimer0();//定时器函数要放到这里来，服务函数不用
+ 175   1        while(1)
+ 176   1        {
+ 177   2          DisplayTime();
+ 178   2          ScanKeys();//使用按键
+C51 COMPILER V9.54   MAIN                                                                  03/08/2022 21:40:03 PAGE 4   
+
+ 179   2        }
+ 180   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    326    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

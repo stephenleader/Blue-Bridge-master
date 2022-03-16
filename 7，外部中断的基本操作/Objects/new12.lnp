@@ -1,0 +1,3 @@
+".\Objects\main2.obj" 
+TO ".\Objects\new12" 
+PRINT(".\Listings\new12.m51") RAMSIZE(256) 

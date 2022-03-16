@@ -1,0 +1,3 @@
+".\Objects\main_moban.obj" 
+TO ".\Objects\moban" 
+PRINT(".\Listings\moban.m51") RAMSIZE(256) 

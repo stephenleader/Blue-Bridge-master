@@ -1,0 +1,201 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        03/01/2022  21:01:13  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\#大一\单片机（大一寒假）\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\new11 PRINT (.\Listings\new11.m51) RAMSIZE 
+>> (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  D:\#大一\单片机（大一寒假）\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\new11 (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     0044H     UNIT         ?PR?SCANKEYS_ALONE?MAIN
+            CODE    0844H     0033H     UNIT         ?PR?_SELECTHC573?MAIN
+            CODE    0877H     0010H     UNIT         ?PR?INITSYSTEM?MAIN
+            CODE    0887H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0893H     0008H     UNIT         ?PR?MAIN?MAIN
+            CODE    089BH     0007H     UNIT         ?PR?_DELAY_K?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\new11 (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN
+  +--> ?PR?INITSYSTEM?MAIN
+  +--> ?PR?SCANKEYS_ALONE?MAIN
+
+?PR?INITSYSTEM?MAIN
+  +--> ?PR?_SELECTHC573?MAIN
+
+?PR?SCANKEYS_ALONE?MAIN
+  +--> ?PR?_DELAY_K?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\new11 (MAIN)
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/01/2022  21:01:13  PAGE 2
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:0080H.2       PUBLIC        L3
+  B:0080H.3       PUBLIC        L4
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00B0H.3       PUBLIC        S4
+  B:00B0H.2       PUBLIC        S5
+  B:00B0H.1       PUBLIC        S6
+  B:00B0H.0       PUBLIC        S7
+  D:00A8H         PUBLIC        IE
+  C:0844H         PUBLIC        _SelectHC573
+  D:00B8H         PUBLIC        IP
+  C:089BH         PUBLIC        _Delay_K
+  C:0877H         PUBLIC        InitSystem
+  C:0893H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        T2CON
+  C:0800H         PUBLIC        ScanKeys_Alone
+  D:00D0H         PUBLIC        PSW
+  B:0080H.0       PUBLIC        L1
+  B:0080H.1       PUBLIC        L2
+  -------         PROC          _SELECTHC573
+  D:0007H         SYMBOL        n
+  C:0844H         LINE#         21
+  C:0844H         LINE#         22
+  C:0844H         LINE#         23
+  C:0853H         LINE#         24
+  C:0853H         LINE#         25
+  C:0853H         LINE#         26
+  C:085BH         LINE#         27
+  C:085CH         LINE#         29
+  C:085CH         LINE#         30
+  C:0864H         LINE#         31
+  C:0865H         LINE#         33
+  C:0865H         LINE#         34
+  C:086DH         LINE#         35
+  C:086EH         LINE#         37
+  C:086EH         LINE#         38
+  C:0876H         LINE#         39
+  C:0876H         LINE#         40
+  C:0876H         LINE#         41
+  -------         ENDPROC       _SELECTHC573
+  -------         PROC          _DELAY_K
+  D:0007H         SYMBOL        y
+  C:089BH         LINE#         43
+  C:089BH         LINE#         44
+  C:089BH         LINE#         45
+  C:08A1H         LINE#         47
+  -------         ENDPROC       _DELAY_K
+  -------         PROC          SCANKEYS_ALONE
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/01/2022  21:01:13  PAGE 3
+
+
+  C:0800H         LINE#         49
+  C:0800H         LINE#         50
+  C:0800H         LINE#         51
+  C:0803H         LINE#         52
+  C:0803H         LINE#         54
+  C:0806H         LINE#         56
+  C:0806H         LINE#         57
+  C:080BH         LINE#         58
+  C:080DH         LINE#         59
+  C:080FH         LINE#         61
+  C:080FH         LINE#         62
+  C:0811H         LINE#         63
+  C:0811H         LINE#         64
+  C:0811H         LINE#         67
+  C:0814H         LINE#         68
+  C:0814H         LINE#         70
+  C:0817H         LINE#         71
+  C:0817H         LINE#         72
+  C:081CH         LINE#         73
+  C:081EH         LINE#         74
+  C:0820H         LINE#         76
+  C:0820H         LINE#         77
+  C:0822H         LINE#         78
+  C:0822H         LINE#         79
+  C:0822H         LINE#         82
+  C:0825H         LINE#         83
+  C:0825H         LINE#         85
+  C:0828H         LINE#         86
+  C:0828H         LINE#         87
+  C:082DH         LINE#         88
+  C:082FH         LINE#         89
+  C:0831H         LINE#         91
+  C:0831H         LINE#         92
+  C:0833H         LINE#         93
+  C:0833H         LINE#         94
+  C:0833H         LINE#         97
+  C:0836H         LINE#         98
+  C:0836H         LINE#         100
+  C:0839H         LINE#         101
+  C:0839H         LINE#         102
+  C:083EH         LINE#         103
+  C:0840H         LINE#         104
+  C:0841H         LINE#         106
+  C:0841H         LINE#         107
+  C:0843H         LINE#         108
+  C:0843H         LINE#         109
+  C:0843H         LINE#         111
+  -------         ENDPROC       SCANKEYS_ALONE
+  -------         PROC          INITSYSTEM
+  C:0877H         LINE#         113
+  C:0877H         LINE#         114
+  C:0877H         LINE#         115
+  C:087CH         LINE#         116
+  C:087FH         LINE#         117
+  C:0883H         LINE#         118
+  C:0886H         LINE#         120
+  -------         ENDPROC       INITSYSTEM
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/01/2022  21:01:13  PAGE 4
+
+
+  -------         PROC          MAIN
+  C:0893H         LINE#         122
+  C:0893H         LINE#         123
+  C:0893H         LINE#         125
+  C:0896H         LINE#         126
+  C:0896H         LINE#         127
+  C:0896H         LINE#         128
+  C:0899H         LINE#         129
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0096H BYTE ( 7%) *
+******************************************************************************
+
+Program Size: data=9.0 xdata=0 code=165
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

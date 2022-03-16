@@ -1,0 +1,194 @@
+C51 COMPILER V9.54   MAIN2                                                                 03/01/2022 21:33:37 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN2
+OBJECT MODULE PLACED IN .\Objects\main2.obj
+COMPILER INVOKED BY: D:\#大一\单片机（大一寒假）\C51\BIN\C51.EXE main2.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRI
+                    -NT(.\Listings\main2.lst) TABS(2) OBJECT(.\Objects\main2.obj)
+
+line level    source
+
+   1          //扩展功能
+   2          
+   3          #include "reg52.h"
+   4          
+   5          sbit HC573_C = P2^7;
+   6          sbit HC573_B = P2^6;
+   7          sbit HC573_A = P2^5;
+   8          
+   9          //按键
+  10          sbit S7 = P3^0;
+  11          sbit S6 = P3^1;
+  12          sbit S5 = P3^2;
+  13          sbit S4 = P3^3;
+  14          
+  15          //led
+  16          sbit L1 = P0^0;
+  17          sbit L2 = P0^1;
+  18          sbit L3 = P0^2;
+  19          sbit L4 = P0^3;
+  20          sbit L5 = P0^4;
+  21          sbit L6 = P0^5;
+  22          
+  23          void SelectHC573(unsigned char n)
+  24          {
+  25   1          switch(n)
+  26   1          {
+  27   2          case 4:
+  28   2              P2 = (P2 & 0x1f ) | 0x80;
+  29   2          break;  
+  30   2          
+  31   2          case 5:
+  32   2          P2 = (P2 & 0x1f ) | 0xa0;
+  33   2          break;
+  34   2          
+  35   2          case 6:
+  36   2          P2 = (P2 & 0x1f ) | 0xc0;
+  37   2          break;
+  38   2          
+  39   2          case 7:
+  40   2          P2 = (P2 & 0x1f ) | 0xe0;
+  41   2          break;
+  42   2          }
+  43   1      }
+  44          
+  45          void Delay_K(unsigned char y)
+  46          {
+  47   1        while(y--);
+  48   1      
+  49   1      }
+  50          
+  51          unsigned char stat_k = 0;
+  52          //状态表示S6和S7都没被按下,初态定义为0
+  53          
+  54          
+C51 COMPILER V9.54   MAIN2                                                                 03/01/2022 21:33:37 PAGE 2   
+
+  55          //扫描独立按键
+  56          void ScanKeys_Alone()
+  57          {
+  58   1          if(S7 == 0)//S7状态设置为1
+  59   1          {
+  60   2              Delay_K(100);//延时消抖
+  61   2              if(S7 == 0)//查询当前状态，为0者被按下
+  62   2              //判断按键是否是真的按下
+  63   2              {
+  64   3                  if(stat_k == 0 )
+  65   3                  {
+  66   4                      L1 = 0;
+  67   4                      
+  68   4                      stat_k = 1;
+  69   4                  }
+  70   3                  else if (stat_k == 1)
+  71   3                  {
+  72   4                      L1 = 1;
+  73   4                      stat_k = 0;
+  74   4                  }
+  75   3              }
+  76   2              while(S6 == 0);
+  77   2          }
+  78   1              
+  79   1            
+  80   1          if(S6 == 0)//S6对应状态设置为2
+  81   1          {
+  82   2              Delay_K(100);//延时消抖
+  83   2              if(S6 == 0)//查询当前状态，为0者被按下
+  84   2              //判断按键是否是真的按下
+  85   2              {
+  86   3                  if(stat_k == 0)
+  87   3                  {
+  88   4                      L2 = 0;
+  89   4                      
+  90   4                      stat_k = 2;
+  91   4                    
+  92   4                  }
+  93   3                  else if (stat_k == 2)
+  94   3                  {
+  95   4                      L2 = 1;
+  96   4                      stat_k = 0;
+  97   4                    
+  98   4                  }
+  99   3                  
+ 100   3              }
+ 101   2          }
+ 102   1              
+ 103   1        
+ 104   1          if(S5 == 0)//状态设为3
+ 105   1          {
+ 106   2              Delay_K(100);//延时消抖
+ 107   2              if(S5 == 0)//查询当前状态，为0者被按下
+ 108   2              //判断按键是否是真的按下
+ 109   2              {
+ 110   3                  if(stat_k == 1 )
+ 111   3                  {
+ 112   4                      L3 = 0;
+ 113   4                      while(S5 == 0);//当S5松开=1
+ 114   4                      L3 = 1;
+ 115   4                  }
+ 116   3                  else if (stat_k == 1)
+C51 COMPILER V9.54   MAIN2                                                                 03/01/2022 21:33:37 PAGE 3   
+
+ 117   3                  {
+ 118   4                      L5 = 1;
+ 119   4                      while(S5 == 0);
+ 120   4                      L5 = 1;
+ 121   4                  }
+ 122   3              }
+ 123   2              while(S5 == 0);
+ 124   2          }
+ 125   1              
+ 126   1          if(S4 == 0)
+ 127   1          {
+ 128   2              Delay_K(100);//延时消抖
+ 129   2              if(S4 == 0)//查询当前状态，为0者被按下
+ 130   2              //判断按键是否是真的按下
+ 131   2              {
+ 132   3                  if(stat_k == 1 )
+ 133   3                  {
+ 134   4                      L4 = 0;
+ 135   4                      while(S4 == 0);
+ 136   4                      L4 =1;
+ 137   4                  }
+ 138   3                  else if (stat_k == 2)
+ 139   3                  {
+ 140   4                      L6 = 0;
+ 141   4                      while(S4 == 0);
+ 142   4                      L6 = 1;
+ 143   4                  }
+ 144   3              }
+ 145   2          }
+ 146   1            
+ 147   1      }
+ 148          
+ 149          void InitSystem()
+ 150          {
+ 151   1          SelectHC573(5);
+ 152   1          P0 = 0X00;
+ 153   1          SelectHC573(4);
+ 154   1          P0 = 0xff;//若为0x00,则为0000 0000,led灯全亮
+ 155   1      
+ 156   1      }
+ 157          
+ 158          void main()
+ 159          {
+ 160   1          
+ 161   1          InitSystem();
+ 162   1          while(1)
+ 163   1          {
+ 164   2              ScanKeys_Alone();
+ 165   2          }
+ 166   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    226    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
