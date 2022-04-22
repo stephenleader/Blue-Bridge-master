@@ -1,14 +1,12 @@
-# C51单片机入门代码
+# C51 MCU code
 
 
 
-1,适用于型号IAP15F2K61S2（国信长天CT107D单片机）
+1. For model IAP15F2K61S2(CT107D)
+2. Welcome to use and modify, and we will share other codes or projects in the futureヾ(•ω•`)o
 
 
-2,欢迎使用与修改，以后陆续会分享其他代码或者项目，敬请期待ヾ(•ω•`)o
 
-
- 三强电子实验室
  
  
  SQEL of CUIT
