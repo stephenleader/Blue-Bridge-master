@@ -1,0 +1,3 @@
+".\Objects\模块化代码基础.obj" 
+TO ".\Objects\mokuai" 
+PRINT(".\Listings\mokuai.m51")

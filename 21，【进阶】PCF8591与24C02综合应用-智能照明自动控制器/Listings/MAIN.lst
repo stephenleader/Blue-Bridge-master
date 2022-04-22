@@ -1,0 +1,266 @@
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:12:45 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\MAIN.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE MAIN.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\MA
+                    -IN.lst) TABS(2) OBJECT(.\Objects\MAIN.obj)
+
+line level    source
+
+   1          //ÌâÄ¿ÒªÇó
+   2          //      ÔÚÀ¶ÇÅ±­´óÈü¡°µ¥Æ¬»úÉè¼ÆÓë¿ª·¢¡±µÄÔÚCT107D×ÛºÏÑµÁ·Æ½Ì¨ÉÏ£¬ÀûÓÃ¾ºÈüÌá¹©µÄIICµ×²ãÇý¶¯´úÂë£¬Éè¼Æ³ÌÐò£
+             -¬ÊµÏÖÒÔÏÂµÄ¹¦ÄÜ£º
+   3          
+   4          //    1- ÏµÍ³ÉÏµçºó£¬Í¨¹ý²ÉÑùPCF8591Í¨µÀ1ÖÐ¹âÃôµç×èRD1µÄÊµÊ±Êý¾Ý£¬²¢¸ù¾Ý¸ÃÊý¾Ý¿ØÖÆ8¸öLEDµÆµÄÁÁÃðÇé¿ö¡£
+   5          
+   6          //       µÆ¹âµÄ¿ØÖÆ·ÖÎª5¸öµÈ¼¶£º
+   7          
+   8          //       µÈ¼¶1£º255 <= ¹âÕÕÊý¾Ý < 200£¬L1µãÁÁ¡£
+   9          
+  10          //       µÈ¼¶2£º200 <= ¹âÕÕÊý¾Ý < 150£¬L1~L2µãÁÁ¡£
+  11          
+  12          //       µÈ¼¶3£º150 <= ¹âÕÕÊý¾Ý < 100£¬L1~L4µãÁÁ¡£
+  13          
+  14          //       µÈ¼¶4£º100 <= ¹âÕÕÊý¾Ý < 50£¬L1~L6µãÁÁ¡£
+  15          
+  16          //       µÈ¼¶5£º50 <= ¹âÕÕÊý¾Ý < 0£¬L1¡«L8µãÁÁ¡£
+  17          //    2- µÆ¹â¿ØÖÆµÈ¼¶ºÍ¹âÃôÊý¾ÝÊµÊ±ÏÔÊ¾ÔÚÊýÂë¹ÜÉÏ£¬ÈçÏÂÈçËùÊ¾£¬µÆ¹âµÈ¼¶ÔÚ×ó£¬¹âÃôÊµÊ±Êý¾ÝÔÚÓÒ¡£
+  18          
+  19          //    3- °´ÏÂS4°´¼ü£¬½«µ±Ç°µÄµÆ¹â¿ØÖÆµÈ¼¶ºÍ¹âÃôµç×èµÄÊý¾Ý±£´æµ½´æ´¢Æ÷24C02µÄ0x01ºÍ0x02ÄÚ´æµ¥ÔªÖÐ¡£
+  20          
+  21          //    4- °´ÏÂS5°´¼üÊ±£¬¶ÁÈ¡´æ´¢ÔÚ24C02µÄÀúÊ·Êý¾Ý²¢ÏÔÊ¾ÔÚÊýÂë¹ÜÉÏ£¬ËÉ¿ªS5°´¼üºó£¬»Ö¸´ÏÔÊ¾ÊµÊ±Êý¾Ý¡£
+  22          
+  23          #include "reg52.h"
+  24          #include "absacc.h"
+  25          #include "iic.h"
+  26          
+  27          sbit S5 = P3^2;
+  28          sbit S4 = P3^3;
+  29          
+  30          unsigned char dat_rd1 = 0;    //¹âÃôµç×èÊµÊ±Êý¾Ý
+  31          unsigned char level = 0;    //µ±Ç°µÆ¹â¿ØÖÆµÈ¼¶
+  32          unsigned char bak_level = 0;  //¹âÃôµç×èÀúÊ·Êý¾Ý
+  33          unsigned char bak_rd1 = 0;    //ÀúÊ·µÆ¹â¿ØÖÆµÈ¼¶
+  34          
+  35          //ÊýÂë¹ÜÏÔÊ¾¶ÎÂëÊý×é
+  36          unsigned char code SMG_duanma[18]=
+  37              {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,
+  38               0x88,0x80,0xc6,0xc0,0x86,0x8e,0xbf,0x7f};
+  39          //¼òµ¥µÄÑÓÊ±º¯Êý
+  40          void DelaySMG(unsigned int t)
+  41          {
+  42   1        while(t--);
+  43   1      }
+  44          /*=====================ÏÔÊ¾µ¥Î»ÊýÂë¹Üº¯Êý=====================*/
+  45          void DisplaySMG_Bit(unsigned char pos, unsigned char value)
+  46          {
+  47   1        XBYTE[0xE000] = 0xFF;       //ÏûÒþ
+  48   1        XBYTE[0xC000] = 0x01 << pos;    //Ñ¡ÔñÊýÂë¹ÜµÄÎ»ÖÃ
+  49   1        XBYTE[0xE000] = value;        //Êä³öÊýÂë¹ÜÏÔÊ¾µÄÄÚÈÝ
+  50   1      }
+  51          
+  52          /*=====================ÏÔÊ¾µ±Ç°µÄÊµÊ±Êý¾Ý=====================*/
+  53          void Display_now()
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:12:45 PAGE 2   
+
+  54          {
+  55   1        DisplaySMG_Bit(0, SMG_duanma[16]);      
+  56   1        DelaySMG(500);
+  57   1        DisplaySMG_Bit(1, SMG_duanma[level]);
+  58   1        DelaySMG(500);
+  59   1        DisplaySMG_Bit(2, SMG_duanma[16]);
+  60   1        DelaySMG(500);
+  61   1            
+  62   1        DisplaySMG_Bit(3, 0xFF);
+  63   1        DelaySMG(500);
+  64   1        DisplaySMG_Bit(4, 0xFF);
+  65   1        DelaySMG(500);
+  66   1        
+  67   1        DisplaySMG_Bit(5, SMG_duanma[dat_rd1 / 100]);//°ÙÎ»
+  68   1        DelaySMG(500);
+  69   1        DisplaySMG_Bit(6, SMG_duanma[(dat_rd1 % 100) / 10]);//Ê®Î»
+  70   1        DelaySMG(500);
+  71   1        DisplaySMG_Bit(7, SMG_duanma[dat_rd1 % 10]);//¸öÎ»
+  72   1        DelaySMG(500);
+  73   1      }
+  74          
+  75          
+  76          /*=====================ÏÔÊ¾¶ÁÈ¡µÄÀúÊ·Êý¾Ý=====================*/
+  77          void Display_old()
+  78          {
+  79   1        DisplaySMG_Bit(0, SMG_duanma[16]);//×î×ó±ßÄÇÒ»¸öÊýÂë¹Ü
+  80   1        DelaySMG(500);
+  81   1        DisplaySMG_Bit(1, SMG_duanma[bak_level]);
+  82   1        DelaySMG(500);
+  83   1        DisplaySMG_Bit(2, SMG_duanma[16]);
+  84   1        DelaySMG(500);
+  85   1            
+  86   1        DisplaySMG_Bit(3, 0xFF);
+  87   1        DelaySMG(500);
+  88   1        DisplaySMG_Bit(4, 0xFF);
+  89   1        DelaySMG(500);
+  90   1        
+  91   1        DisplaySMG_Bit(5, SMG_duanma[bak_rd1 / 100]);
+  92   1        DelaySMG(500);
+  93   1        DisplaySMG_Bit(6, SMG_duanma[(bak_rd1 % 100) / 10]);
+  94   1        DelaySMG(500);
+  95   1        DisplaySMG_Bit(7, SMG_duanma[bak_rd1 % 10]);
+  96   1        DelaySMG(500);
+  97   1      }
+  98          
+  99          //**²¹³äXBYTEµÄ¶ÔÓ¦µÄ¶«Î÷**
+ 100          //XBYTE[0x8000]= 0x00;LED Ö¸Ê¾µÆÈ«²¿µãÁÁ
+ 101          //XBYTE[0x8000] = 0xff;LEDÖ¸Ê¾µÆÈ«²¿Ï¨Ãð
+ 102          //XBYTE[0xE000] = 0xFF;ÊýÂë¹ÜÐ§Ó¦
+ 103          
+ 104          /*===================²ÉÑùPCF8591Í¨µÀ1µÄÊý¾Ý===================*/
+ 105          void Read_RD1()
+ 106          {
+ 107   1        IIC_Start();          //ÆðÊ¼ÐÅºÅ
+ 108   1        IIC_SendByte(0x90);       //Éè±¸Ð´µØÖ·
+ 109   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 110   1        IIC_SendByte(0x01);       //ÉèÖÃ¿ØÖÆ¼Ä´æÆ÷
+ 111   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 112   1        IIC_Stop();           //Í£Ö¹ÐÅºÅ
+ 113   1        
+ 114   1        IIC_Start();          //ÆðÊ¼ÐÅºÅ
+ 115   1        IIC_SendByte(0x91);       //Éè±¸¶ÁµØÖ·
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:12:45 PAGE 3   
+
+ 116   1        IIC_WaitAck();            //µÈ´ýÓ¦´ð
+ 117   1        dat_rd1 = IIC_RecByte();      //¶ÁÈ¡µ±Ç°Í¨µÀ1µÄÊý¾Ý
+ 118   1        IIC_Stop();           //Í£Ö¹ÐÅºÅ
+ 119   1      }
+ 120          
+ 121          /*======================µÆ¹âµÈ¼¶¿ØÖÆº¯Êý======================*/
+ 122          void Right_Auto()
+ 123          {
+ 124   1        Read_RD1();           //¶ÁÈ¡¹âÃôµç×èµÄÊµÊ±Êý¾Ý
+ 125   1        if(dat_rd1 > 200)       //µÈ¼¶1
+ 126   1        {
+ 127   2          XBYTE[0x8000] = 0xfe;   //µãÁÁL1,[0x8000]¶ÔÓ¦led
+ 128   2          level = 1;
+ 129   2        }
+ 130   1        else if(dat_rd1 > 150)        //µÈ¼¶2
+ 131   1        {
+ 132   2          XBYTE[0x8000] = 0xfc;   //µãÁÁL1~L2
+ 133   2          level = 2;
+ 134   2        }
+ 135   1        else if(dat_rd1 > 100)        //µÈ¼¶3
+ 136   1        {
+ 137   2          XBYTE[0x8000] = 0xf0;   //µãÁÁL1~L4
+ 138   2          level = 3;
+ 139   2        }
+ 140   1        else if(dat_rd1 > 50)     //µÈ¼¶4
+ 141   1        {
+ 142   2          XBYTE[0x8000] = 0xc0;   //µãÁÁL1~L6
+ 143   2          level = 4;
+ 144   2        }
+ 145   1        else              //µÈ¼¶5
+ 146   1        {
+ 147   2          XBYTE[0x8000] = 0x00;   //µãÁÁL1~L8
+ 148   2          level = 5;
+ 149   2        }
+ 150   1      }
+ 151          /*=======================24C02×Ö½ÚÐ´º¯Êý=======================*/
+ 152          void Write_24C02(unsigned char addr, unsigned char dat)
+ 153          {
+ 154   1        IIC_Start();          //ÆðÊ¼ÐÅºÅ          
+ 155   1        IIC_SendByte(0xa0);       //Éè±¸Ð´µØÖ·
+ 156   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 157   1        IIC_SendByte(addr);       //·¢ËÍÄÚ´æ×Ö½ÚµØÖ·
+ 158   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 159   1        IIC_SendByte(dat);        //Ð´ÈëÄ¿±êÊý¾Ý
+ 160   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 161   1        IIC_Stop();           //Í£Ö¹ÐÅºÅ
+ 162   1      }
+ 163          
+ 164          /*=======================24C02×Ö½Ú¶Áº¯Êý=======================*/
+ 165          unsigned char Read_24C02(unsigned char addr)
+ 166          {
+ 167   1        unsigned char tmp;
+ 168   1        IIC_Start();          //ÆðÊ¼ÐÅºÅ      
+ 169   1        IIC_SendByte(0xa0);       //Éè±¸Ð´µØÖ·
+ 170   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 171   1        IIC_SendByte(addr);       //·¢ËÍÄÚ´æ×Ö½ÚµØÖ·
+ 172   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 173   1       
+ 174   1        IIC_Start();          //ÆðÊ¼ÐÅºÅ
+ 175   1        IIC_SendByte(0xa1);       //Éè±¸¶ÁµØÖ·
+ 176   1        IIC_WaitAck();          //µÈ´ýÓ¦´ð
+ 177   1        tmp = IIC_RecByte();      //¶Á³öÄ¿±êÊý¾Ý
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:12:45 PAGE 4   
+
+ 178   1        IIC_Stop();           //Í£Ö¹ÐÅºÅ
+ 179   1        return tmp;
+ 180   1      }
+ 181          
+ 182          
+ 183          /*=======================°´¼üÉ¨Ãè´¦Àíº¯Êý=======================*/
+ 184          void Scan_Keys()
+ 185          {
+ 186   1        if(S4 == 0)               
+ 187   1        {
+ 188   2          DelaySMG(100);
+ 189   2          if(S4 == 0)
+ 190   2          {
+ 191   3            //½«µ±Ç°µÄµÆ¹â¿ØÖÆµÈ¼¶ºÍ¹âÃôµç×èÊý¾ÝÐ´Èë24C02´æ´¢Æ÷
+ 192   3            Write_24C02(0x01, level);
+ 193   3            DelaySMG(1000);       //µÈ´ýÊý¾ÝÐ´ÈëÍê³É
+ 194   3            Write_24C02(0x02, dat_rd1);
+ 195   3            
+ 196   3            while(S4 == 0)
+ 197   3            {
+ 198   4              Display_now();      //ÔÚµÈ´ý°´¼üËÉ¿ªÊ±Ë¢ÐÂÊýÂë¹Ü
+ 199   4            }
+ 200   3          }
+ 201   2        }
+ 202   1        if(S5 == 0)
+ 203   1        {
+ 204   2          DelaySMG(100);
+ 205   2          if(S5 == 0)
+ 206   2          {
+ 207   3            //¶Á³ö24C02ÖÐµÄÀúÊ·Êý¾Ý
+ 208   3            bak_level = Read_24C02(0x01);
+ 209   3            bak_rd1 = Read_24C02(0x02);
+ 210   3            while(S5 == 0)
+ 211   3            {
+ 212   4              Display_old();    //ÔÚS5°´¼ü°´ÏÂÊ±£¬ÏÔÊ¾ÀúÊ·Êý¾Ý
+ 213   4            }
+ 214   3          }
+ 215   2        }
+ 216   1      }
+ 217          /*============================Ö÷º¯Êý============================*/
+ 218          void main()
+ 219          {
+ 220   1        while(1)
+ 221   1        {
+ 222   2          Right_Auto();     //¹âÃôÊý¾ÝÊµÊ±²ÉÑùºÍµÆ¹â¿ØÖÆ
+ 223   2          Display_now();      //ÊýÂë¹Ü¶¯Ì¬ÏÔÊ¾
+ 224   2          Scan_Keys();      //°´¼üÉ¨Ãè´¦Àí
+ 225   2        }
+ 226   1      }
+ 227          
+ 228          
+ 229          
+ 230          
+ 231          
+ 232          
+ 233          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    525    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:12:45 PAGE 5   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

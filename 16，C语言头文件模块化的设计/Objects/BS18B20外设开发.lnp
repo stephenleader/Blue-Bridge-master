@@ -1,0 +1,5 @@
+".\Objects\外设设计开发.obj",
+".\Objects\onewire.obj",
+".\Objects\xmf_smg_ca.obj" 
+TO ".\Objects\BS18B20外设开发" 
+PRINT(".\Listings\BS18B20外设开发.m51")

@@ -1,0 +1,45 @@
+A51 MACRO ASSEMBLER  ASM1                                                                 03/27/2022 22:50:20 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\Asm1.obj
+ASSEMBLER INVOKED BY: D:\Keil5\x64\C51\BIN\A51.EXE Asm1.a51 SET(SMALL) DEBUG PRINT(.\Listings\Asm1.lst) OBJECT(.\Objects
+                      \Asm1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     ORG             0000H
+0000 2109              2                     AJMP    START
+0100                   3                     ORG     0100H
+0100 7EFA              4     DELAY:  MOV     R6,#250
+0102 7FC8              5     L1:             MOV     R7,#200
+0104 DFFE              6                     DJNZ    R7,$
+0106 DEFA              7                     DJNZ    R6,L1
+0108 22                8                     RET
+                       9                     
+0109                  10     START:  
+0109 F580             11                     MOV     P0,A
+010B F580             12     LOOP:   MOV     P0,A
+010D 3100             13                     CALL    DELAY
+010F 23               14                     RL      A
+0110 210B             15                     AJMP    LOOP
+                      16                     END
+A51 MACRO ASSEMBLER  ASM1                                                                 03/27/2022 22:50:20 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   0100H   A   
+L1 . . . . . . . .  C ADDR   0102H   A   
+LOOP . . . . . . .  C ADDR   010BH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+START. . . . . . .  C ADDR   0109H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

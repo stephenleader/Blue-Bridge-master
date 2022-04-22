@@ -1,0 +1,149 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/20/2022  22:35:43  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\X64\C51\BIN\BL51.EXE .\Objects\串口基础.obj TO .\Objects\串口通信原理 PRINT (.\Listings\串口通信原理.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\串口基础.obj (________)
+  D:\KEIL5\X64\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Objects\串口通信原理 (________)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?________
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0020H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+                    0026H     07DAH                  *** GAP ***
+            CODE    0800H     0021H     UNIT         ?PR?UARTINIT?________
+            CODE    0821H     0019H     UNIT         ?PR?SERVICEUART?________
+            CODE    083AH     000FH     UNIT         ?PR?MAIN?________
+            CODE    0849H     000CH     UNIT         ?C_C51STARTUP
+            CODE    0855H     0008H     UNIT         ?PR?_SEND?________
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\串口通信原理 (________)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?SERVICEUART?________
+  +--> ?PR?_SEND?________
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?________
+
+?PR?MAIN?________
+  +--> ?PR?UARTINIT?________
+  +--> ?PR?_SEND?________
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\串口通信原理 (________)
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/20/2022  22:35:43  PAGE 2
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ________
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:0855H         PUBLIC        _Send
+  D:00A8H         PUBLIC        IE
+  B:00A8H.4       PUBLIC        ES
+  D:00B8H         PUBLIC        IP
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  D:0008H         PUBLIC        urdat
+  C:083AH         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  D:0098H         PUBLIC        SCON
+  C:0800H         PUBLIC        UartInit
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008EH         PUBLIC        AUXR
+  B:00A8H.3       PUBLIC        ET1
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  C:0821H         PUBLIC        ServiceUart
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _SEND
+  D:0007H         SYMBOL        dat
+  C:0855H         LINE#         7
+  C:0855H         LINE#         8
+  C:0855H         LINE#         9
+  C:0857H         LINE#         10
+  C:085AH         LINE#         11
+  C:085CH         LINE#         12
+  -------         ENDPROC       _SEND
+  -------         PROC          UARTINIT
+  C:0800H         LINE#         13
+  C:0800H         LINE#         14
+  C:0800H         LINE#         15
+  C:0803H         LINE#         16
+  C:0806H         LINE#         17
+  C:0809H         LINE#         18
+  C:080CH         LINE#         19
+  C:080FH         LINE#         20
+  C:0812H         LINE#         21
+  C:0815H         LINE#         22
+  C:0818H         LINE#         23
+  C:081AH         LINE#         24
+  C:081CH         LINE#         26
+  C:081EH         LINE#         27
+  C:0820H         LINE#         28
+  -------         ENDPROC       UARTINIT
+  -------         PROC          SERVICEUART
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/20/2022  22:35:43  PAGE 3
+
+
+  C:0821H         LINE#         29
+  C:0828H         LINE#         31
+  C:082BH         LINE#         32
+  C:082BH         LINE#         33
+  C:082DH         LINE#         34
+  C:0830H         LINE#         35
+  C:0835H         LINE#         36
+  C:0835H         LINE#         37
+  -------         ENDPROC       SERVICEUART
+  -------         PROC          MAIN
+  C:083AH         LINE#         39
+  C:083AH         LINE#         40
+  C:083AH         LINE#         41
+  C:083DH         LINE#         42
+  C:0842H         LINE#         43
+  C:0847H         LINE#         44
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        ________
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0054H BYTE ( 4%) *
+******************************************************************************
+
+Program Size: data=10.0 xdata=0 code=99
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

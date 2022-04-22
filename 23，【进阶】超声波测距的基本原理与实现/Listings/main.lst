@@ -1,0 +1,168 @@
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:19:44 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ma
+                    -in.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //¡¾1¡¿»ù±¾Ô­Àí
+   2          //     ³¬Éù²¨·¢ÉäÄ£¿éÏòÄ³Ò»·½Ïò·¢Éä³¬Éù²¨£¬ÔÚ·¢ÉäÊ±¿ÌµÄÍ¬Ê±¿ªÊ¼¼ÆÊ±£¬³¬Éù²¨ÔÚ¿ÕÆøÖÐ´«²¥£¬Í¾ÖÐÅöµ½ÕÏ°­Îï¾ÍÁ
+             -¢¼´·µ»ØÀ´£¬³¬Éù²¨½ÓÊÕÆ÷ÊÕµ½·´Éä²¨¾ÍÁ¢¼´Í£Ö¹¼ÆÊ±¡£
+   3          
+   4          //¡¾2¡¿¼ÆËã¹«Ê½
+   5          //    ¾àÀë = ÉùËÙ ¡Á ·¢³ö³¬Éù²¨µ½½ÓÊÕ·µ»ØµÄÊ±¼ä/2
+   6          
+   7          //    ÒòÎª³¬Éù²¨ÔÚ¿ÕÆøÖÐµÄ´«²¥ËÙ¶ÈÊÜÎÂ¶ÈÓ°Ïì¡£Éù²¨ÔÚ¿ÕÆøÖÐµÄ´«²¥ËÙ¶ÈÓëÎÂ¶ÈµÄ¹ØÏµÊÇ£º
+   8          
+   9          //    ÔÚ20ÉãÊÏ¶ÈÊ±£¬ÉùËÙV = 332 + 0.607t  (m/s)
+  10          
+  11          //    ÀûÓÃ³¬Éù²¨½øÐÐ¾àÀë²âÁ¿£¬ÒªÇó¾«¶ÈÒ»°ã¶¼²»¸ß£¬È¡20ÉãÊÏ¶ÈÊ±ºòµÄÉùËÙ344M/S½øÐÐ¼ÆËã£¬ÔÙ½øÐÐÊÊµ±µÄ²¹³¥¾Í¿É
+             -ÒÔ¡£ËùÒÔ£¬Æä¼ÆËã¹«Ê½Îª£º¾àÀëL = 344M/S * T / 2 = 172M/S * T ¡£
+  12          
+  13          //¡¾3¡¿ÊµÏÖ²½Öè
+  14          //  1-²úÉú8¸ö40KHzµÄ³¬Éù²¨ÐÅºÅ£¬Í¨¹ýTXÒý½Å·¢Éä³öÈ¥¡£
+  15          
+  16          //  2-Æô¶¯¶¨Ê±Æ÷£¬¼ÆËã¼ÆÊýÂö³å¡£
+  17          
+  18          //  3-µÈ´ý³¬Éù²¨ÐÅºÅ·µ»Ø£¬Èç¹û½ÓÊÕµ½·´Éä»ØÀ´µÄÐÅºÅ£¬RXÒý½Å±äÎªµÍµçÆ½¡£
+  19          
+  20          //  4-Í£Ö¹¶¨Ê±Æ÷£¬¶ÁÈ¡Âö³å¸öÊý£¬¼´»ñµÃÊ±¼äT¡£
+  21          
+  22          //  5-¸ù¾Ý¹«Ê½£¬L = V * T /2m£¬½øÐÐ¾àÀëµÄ¼ÆËã¡£
+  23          
+  24          //¡¾4¡¿À¶ÇÅ±­ÑµÁ·ÑùÀý
+  25          //    ÔÚÀ¶ÇÅ±­¡°µ¥Æ¬»úÉè¼ÆÓë¿ª·¢¡±±ÈÈüÖÐ£¬³¬Éù²¨²â¾àÊÇÒ»Ö±ÒÔÀ´¶¼ÊÇ¹úÈüÖÐÖØÒªµÄ¿¼µã£¬¼¸ºõÃ¿½ì±Ø¿¼¡£ËäÈ»Ê¡Èü
+             -»¹Ã»ÓÐ¿¼¹ý£¬µ«Ò²²»ÄÜÅÅ³ýÒÔºó²»¿¼Å¶¡£ºÜ¶àÍ¬Ñ§»á¾õµÃ³¬Éù²¨²â¾àºÜÄÑ£¬Ô­ÒòÓÐ¶þ£¬Ò»ÊÇËüºÍÆäËûµÄÍâÉèÄ£¿é²»Í¬£¬Ã»ÓÐµ×²ãÇý¶¯´úÂë
+             -Ìá¹©£»¶þÊÇÍ¬Ñ§ÃÇ²»ÁË½âÆä¹¤×÷Ô­ÀíÓëÊµÏÖ²½Öè¡£ÆäÊµ£¬³¬Éù²¨²â¾àÒ»µã¶¼²»ÄÑ£¬Ï£ÍûÐ¡ÃÛ·äÀÏÊ¦µÄÎÄÕÂÄÜ¹»°ïµ½Äã¡£
+  26          
+  27          //    ÔÚÀ¶ÇÅ±­µ¥Æ¬»úµÄ¾ºÈü×ÛºÏÆ½Ì¨CT107DÖÐ£¬³¬Éù²¨Ä£¿éµÄTXÒý½Å½Óµ½µ¥Æ¬»úµÄP1.0¶Ë¿Ú£¬RXÒý½Å½Óµ½µ¥Æ¬»úµÄP1.1
+             -¶Ë¿Ú¡£Éè¼Æ³ÌÐò£¬½øÐÐ³¬Éù²¨²â¾à£¬×î´ó²âÁ¿·¶Î§Ô¼140cm¡£²âÁ¿½á¹ûÓÃcm×÷ÎªÏÔÊ¾µ¥Î»£¬ÏÔÊ¾ÔÚÊýÂë¹ÜµÄ×îÓÒ±ßÈýÎ»¡£Èç¹û²âÁ¿¾àÀë³¬³
+             -ö·¶Î§£¬ÔòÒÔ¡°F¡±×÷Îª±êÖ¾£¬ÏÔÊ¾ÔÚÊýÂë¹ÜµÄ×î×ó±ßÒ»Î»¡£
+  28          #include "reg52.h"
+  29          #include "absacc.h"
+  30          #include "intrins.h"
+  31           
+  32          sbit TX = P1^0;
+  33          sbit RX = P1^1;
+  34           
+  35          unsigned int distance = 0;
+  36           
+  37          unsigned char code SMG_duanma[18]=
+  38              {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,
+  39               0x88,0x80,0xc6,0xc0,0x86,0x8e,0xbf,0x7f};
+  40           
+  41          void DelaySMG(unsigned int t)
+  42          {
+  43   1        while(t--);
+  44   1      }
+  45           
+  46          void DisplaySMG_Bit(unsigned char pos, unsigned char value)
+  47          {
+  48   1        XBYTE[0xE000] = 0xFF;
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:19:44 PAGE 2   
+
+  49   1        XBYTE[0xC000] = 0x01 << pos;
+  50   1        XBYTE[0xE000] = value;
+  51   1      }
+  52           
+  53          void Display_Distance()
+  54          {
+  55   1        if(distance == 999)
+  56   1        {
+  57   2          DisplaySMG_Bit(0, SMG_duanma[15]);      //³¬³ö²âÁ¿·¶Î§±êÖ¾£ºF
+  58   2          DelaySMG(500);
+  59   2        }
+  60   1        else
+  61   1        {
+  62   2          DisplaySMG_Bit(5, SMG_duanma[distance / 100]);
+  63   2          DelaySMG(500);
+  64   2          DisplaySMG_Bit(6, SMG_duanma[(distance % 100) / 10]);
+  65   2          DelaySMG(500);
+  66   2          DisplaySMG_Bit(7, SMG_duanma[distance % 10]);
+  67   2          DelaySMG(500);
+  68   2        }
+  69   1      }
+  70           
+  71          void Delay12us()                  //@12.000MHz ÑÓÊ±12us
+  72          {
+  73   1        unsigned char i;
+  74   1       
+  75   1        _nop_();
+  76   1        _nop_();
+  77   1        i = 33;
+  78   1        while (--i);
+  79   1      }
+  80           
+  81          void Send_Wave()                 //²úÉú8¸ö40KHx³¬Éù²¨ÐÅºÅ
+  82          {
+  83   1        unsigned char i;
+  84   1        for(i = 0; i < 8; i++)
+  85   1        {
+  86   2          TX = 1;
+  87   2          Delay12us();  
+  88   2          TX = 0;
+  89   2          Delay12us();
+  90   2        }
+  91   1      }
+  92           
+  93          void Measure_Distance()         //³¬Éù²¨²â¾à
+  94          {
+  95   1        unsigned int time = 0;
+  96   1        
+  97   1        TMOD &= 0x0f;             //¶¨Ê±Æ÷1Ä£Ê½0£¬13Î»£¬×î´ó8192¸ö¼ÆÊýÂö³å                
+  98   1        TL1 = 0x00;                   
+  99   1        TH1 = 0x00;   
+ 100   1        
+ 101   1        Send_Wave();            //·¢ËÍ³¬Éù²¨ÐÅºÅ              
+ 102   1        TR1 = 1;            //Æô¶¯¶¨Ê±Æ÷            
+ 103   1        while((RX == 1) && (TF1 == 0));    //µÈ´ý³¬Éù²¨ÐÅºÅ·µ»Ø»òÕßµÈµ½²âÁ¿³¬³ö·¶Î§
+ 104   1        TR1 = 0;            //Í£Ö¹¶¨Ê±Æ÷        
+ 105   1        
+ 106   1        if(TF1 == 0)              //Õý³£²âÁ¿·¶Î§              
+ 107   1        {
+ 108   2          time = TH1;                 
+ 109   2          time = (time << 8) | TL1;   
+ 110   2          distance = ((time / 10) * 17) / 100 + 3;
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 22:19:44 PAGE 3   
+
+ 111   2        }
+ 112   1        else                        //³¬³ö²âÁ¿·¶Î§      
+ 113   1        {
+ 114   2          TF1 = 0;
+ 115   2          distance = 999;
+ 116   2        }
+ 117   1      }
+ 118           
+ 119          void Delay(unsigned char n)        //ÊýÂë¹ÜÏÔÊ¾ÔöÇ¿
+ 120          {
+ 121   1        while(n--)
+ 122   1        {
+ 123   2          Display_Distance();
+ 124   2        }
+ 125   1      }
+ 126           
+ 127          void main()
+ 128          {
+ 129   1        while(1)
+ 130   1        {
+ 131   2          Measure_Distance();
+ 132   2          Delay(10);
+ 133   2        }
+ 134   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    287    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

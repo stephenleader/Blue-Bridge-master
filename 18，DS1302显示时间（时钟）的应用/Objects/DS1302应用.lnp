@@ -1,0 +1,5 @@
+".\Objects\main1.obj",
+".\Objects\ds1302.obj",
+".\Objects\xmf_smg_ca.obj" 
+TO ".\Objects\DS1302应用" 
+PRINT(".\Listings\DS1302应用.m51")

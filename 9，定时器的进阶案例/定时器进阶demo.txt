@@ -1,0 +1,147 @@
+#include "reg52.h"
+
+sbit S4 = P3^3;
+sbit S5 = P3^2;
+
+unsigned char t_fen = 0;//fen
+unsigned char t_ms = 0;//haomiao
+unsigned char t_s = 0;//miao
+
+sbit HC573_C = P2^7;
+sbit HC573_B = P2^6;
+sbit HC573_A = P2^5;
+
+unsigned char code SMG_NoDot[18] = 
+{0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,
+	0x80,0x90,0x88,0x80,0xc6,0xc0,0x86,0x8e,
+	0xbf,0x7f};
+
+void InitHC573(unsigned char n)
+{
+	switch(n)
+	{
+		case 4:
+			HC573_C = 1;
+			HC573_B = 0;
+			HC573_A = 0;
+		break;
+		
+		case 5:
+			HC573_C = 1;
+			HC573_B = 0;
+			HC573_A = 1;
+		break;
+		
+		case 6:
+			HC573_C = 1;
+			HC573_B = 1;
+			HC573_A = 0;
+		break;
+		
+		case 7:
+			HC573_C = 1;
+			HC573_B = 1;
+			HC573_A = 1;
+		break;
+	}
+}
+
+void Delay(unsigned int t)
+{
+		while(t--);
+		while(t--);
+}
+
+void DisplaySMG_Bit(unsigned char value,unsigned char pos)//ÊýÂë¹ÜÏÔÊ¾
+{
+	InitHC573(6);
+	//¶ÔÓ¦com1~com8£¬Ò²¾ÍÊÇ×ó±ßµÄÊýÂë¹ÜºÍÓÒ±ßµÄÊýÂë¹Ü
+	P0 = 0x01 << pos;
+	//µãÁÁµÚÒ»Î»£¬ºóÃæµÄÎ»ÊýÔÚ´Ë»ù´¡ÉÏ×óÒÆ
+	InitHC573(7);
+	P0 = value;
+}
+
+//Ê¹ÓÃ¶à¸öÊýÂë¹Ü
+//£¬ÕâÐèÒªÎÒÃÇ¿¼ÂÇÊýÂë¹ÜµÄ¶¯Ì¬ÏÔÊ¾
+void InitSystem()
+{
+	InitHC573(5);
+	P0 = 0x00;
+	InitHC573(4);
+	P0 = 0xff;
+}
+
+void Diaplay_Time()//ÊýÂë¹ÜÏÔÊ¾Ê±¼ä
+{
+	//show haomiao
+	DisplaySMG_Bit(SMG_NoDot[t_ms % 10],7);
+	Delay(500);
+	DisplaySMG_Bit(SMG_NoDot[t_ms / 10],6);
+	Delay(500);
+	//ÏÔÊ¾·Ö¸ô·û
+	DisplaySMG_Bit(SMG_NoDot[16],5);
+	Delay(500);
+	
+	//show miao
+	DisplaySMG_Bit(SMG_NoDot[t_s % 10],4);
+	Delay(500);
+	DisplaySMG_Bit(SMG_NoDot[t_s / 10],3);
+	Delay(500);
+	
+	//ÏÔÊ¾·Ö¸ô·û
+	DisplaySMG_Bit(SMG_NoDot[16],2);
+	Delay(500);
+	
+	//shou fen
+	DisplaySMG_Bit(SMG_NoDot[t_fen % 10],1);
+	Delay(500);
+	DisplaySMG_Bit(SMG_NoDot[t_fen / 10],0);
+	Delay(500);
+}
+
+//=========¶¨Ê±Æ÷º¯Êý===========
+void InitTimer0()
+{
+	TMOD = 0x01;
+	TH0 = (65535 - 50000 ) / 256;
+	TL0 = (65535 - 50000 ) % 256;
+	
+	ET0 = 1;
+	EA = 1;//×ÜÖÐ¶Ï´ò¿ª
+	TR0 = 1;//Æô¶¯	
+}
+
+//=========ÖÐ¶Ï·þÎñº¯Êý==========
+void ServiceTimer0() interrupt 1
+{
+	TH0 = (65535 - 50000 ) / 256;
+	TL0 = (65535 - 50000 ) % 256;
+	
+	t_ms++;
+	if (t_ms == 20)//50ºÁÃëX20=1000ºÁÃë=1Ãë
+	{
+		t_s++;//Ãë¼Ó1
+		t_ms = 0;//ºÁÃëÖÃ0
+		if (t_s == 60)
+		{
+			t_fen++;//·ÖÖÓÊý¼Ó1
+			t_s = 0;//ÃëÇåÁã
+		}
+		if ( t_fen == 99 )//100Ã»°ì·¨ÏÔÊ¾
+		{
+			t_fen = 0;
+		}
+	}
+}
+
+void main()
+{
+	InitTimer0();
+	InitSystem();
+	while(1)
+	{
+		
+		Diaplay_Time();
+	}
+}

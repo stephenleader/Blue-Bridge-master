@@ -1,0 +1,115 @@
+C51 COMPILER V9.54   MAIN1                                                                 04/01/2022 17:11:21 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN1
+OBJECT MODULE PLACED IN .\Objects\main1.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE main1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\m
+                    -ain1.lst) TABS(2) OBJECT(.\Objects\main1.obj)
+
+line level    source
+
+   1          /**
+   2          *对于存储器映射拓展技术应用
+   3          *CT107D平台的J13要将1-2脚短接
+   4          *引入“absacc.h"头文件，
+   5          *通过XBYTE关键字来直接操作扩展资源
+   6          *存储器映射扩展方式要占用单片机的P3.6引脚
+   7          *C语言中的XBYTE对应汇编中的MOV,MOVX
+   8          *
+   9          *
+  10          */
+  11          #include "reg52.h"
+  12          
+  13          void Delay(unsigned int t)
+  14          {
+  15   1          while(t--);
+  16   1          while(t--);
+  17   1          while(t--);
+  18   1      }
+  19          
+  20          void SelectHC573(unsigned char n)
+  21          {
+  22   1          switch(n)
+  23   1          {
+  24   2            case 4:
+  25   2              P2 = (P2 & 0x1f) | 0x80;
+  26   2            break;
+  27   2            
+  28   2            case 5:
+  29   2              P2 = (P2 & 0x1f) | 0xa0;
+  30   2            break;
+  31   2            
+  32   2            case 6:
+  33   2              P2 = (P2 & 0x1f) | 0xc0;
+  34   2            break;
+  35   2            
+  36   2            case 7:
+  37   2              P2 = (P2 & 0x1f) | 0xe0;
+  38   2            break;
+  39   2          }
+  40   1      }
+  41          
+  42          void LEDRunnning()
+  43          {
+  44   1        SelectHC573(4);
+  45   1        P0=0xf0;
+  46   1        Delay(60000);
+  47   1        Delay(60000);
+  48   1        Delay(60000);
+  49   1        P0=0x0f;//高四位点亮
+  50   1        Delay(60000);
+  51   1        Delay(60000);
+  52   1        Delay(60000);
+  53   1        P0=0xff;//高四位点亮
+  54   1        Delay(60000);
+C51 COMPILER V9.54   MAIN1                                                                 04/01/2022 17:11:21 PAGE 2   
+
+  55   1        Delay(60000);
+  56   1        Delay(60000);
+  57   1      }
+  58          
+  59          void SMGRunnning()
+  60          {
+  61   1        unsigned char i;
+  62   1        for ( i = 0 ; i < 8 ; i++ )
+  63   1        {
+  64   2          SelectHC573(6);
+  65   2          P0 = 0x01 << i;
+  66   2          SelectHC573(7);
+  67   2          P0=0x00;
+  68   2          Delay(60000);
+  69   2          Delay(60000);
+  70   2        }
+  71   1      }
+  72          
+  73          void InitSystem()
+  74          {
+  75   1        SelectHC573(5);
+  76   1        P0=0x00;
+  77   1        SelectHC573(4);
+  78   1        P0=0xff;
+  79   1      }
+  80          
+  81          void main01(void)
+  82          {
+  83   1        InitSystem();
+  84   1        while(1)
+  85   1        {
+  86   2          LEDRunnning();
+  87   2          SMGRunnning();
+  88   2        }
+  89   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    193    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

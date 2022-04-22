@@ -1,0 +1,178 @@
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 21:41:10 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ma
+                    -in.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          #include "absacc.h"
+   3          #include "iic.h"
+   4          
+   5          sbit HC573_C = P2^7;
+   6          sbit HC573_B = P2^6;
+   7          sbit HC573_A = P2^5;
+   8          
+   9          unsigned char dat1 = 0, dat2 = 0, dat3 = 0;
+  10          
+  11          unsigned char code SMG_duanma[18]=
+  12              {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,
+  13               0x88,0x80,0xc6,0xc0,0x86,0x8e,0xbf,0x7f};
+  14          
+  15          void SelectHC573(unsigned char n)
+  16          {
+  17   1          switch(n)
+  18   1          {
+  19   2          case 4:
+  20   2              HC573_C = 1;
+  21   2              HC573_B = 0;
+  22   2              HC573_A = 0;
+  23   2              break;
+  24   2          case 5:
+  25   2              HC573_C = 1;
+  26   2              HC573_B = 0;
+  27   2              HC573_A = 1;
+  28   2              break;
+  29   2          case 6:
+  30   2              HC573_C = 1;
+  31   2              HC573_B = 1;
+  32   2              HC573_A = 0;
+  33   2              break;
+  34   2          case 7:
+  35   2              HC573_C = 1;
+  36   2              HC573_B = 1;
+  37   2              HC573_A = 1;
+  38   2              break;
+  39   2          }
+  40   1          
+  41   1      }
+  42          void InitSystem()
+  43          {
+  44   1        SelectHC573(5);
+  45   1        P0=0x00;
+  46   1        SelectHC573(4);
+  47   1        P0=0xff;
+  48   1      }
+  49          
+  50          void DelaySMG(unsigned int t)
+  51          {
+  52   1        while(t--);
+  53   1      }
+  54           
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 21:41:10 PAGE 2   
+
+  55          void DisplaySMG_Bit(unsigned char pos, unsigned char value)
+  56          {
+  57   1        XBYTE[0xE000] = 0xFF;
+  58   1        XBYTE[0xC000] = 0x01 << pos;
+  59   1        XBYTE[0xE000] = value;
+  60   1      }
+  61          
+  62          void Write_24C02(unsigned char addr, unsigned char dat)
+  63          {
+  64   1        IIC_Start();            
+  65   1        IIC_SendByte(0xa0);     
+  66   1        IIC_WaitAck();        
+  67   1        IIC_SendByte(addr);     
+  68   1        IIC_WaitAck();          
+  69   1        IIC_SendByte(dat);      
+  70   1        IIC_WaitAck();          
+  71   1        IIC_Stop();             
+  72   1      }
+  73          
+  74          unsigned char Read_24C02(unsigned char addr)
+  75          {
+  76   1        unsigned char tmp;
+  77   1        
+  78   1        IIC_Start();          
+  79   1        IIC_SendByte(0xa0);     
+  80   1        IIC_WaitAck();          
+  81   1        IIC_SendByte(addr);     
+  82   1        IIC_WaitAck();          
+  83   1        
+  84   1        IIC_Start();            
+  85   1        IIC_SendByte(0xa1);     
+  86   1        IIC_WaitAck();        
+  87   1        tmp = IIC_RecByte();              
+  88   1        IIC_Stop();             
+  89   1        return tmp;
+  90   1      }
+  91          
+  92          void Read_Write()
+  93          {
+  94   1        dat1 = Read_24C02(0x01);
+  95   1        dat2 = Read_24C02(0x03);
+  96   1        dat3 = Read_24C02(0x05);
+  97   1        
+  98   1        dat1 = dat1 + 1;
+  99   1        dat2 = dat2 + 2;
+ 100   1        dat3 = dat3 + 3;
+ 101   1        
+ 102   1        if(dat1 > 10)
+ 103   1          dat1 = 0;
+ 104   1        if(dat2 > 20)
+ 105   1          dat2 = 0;
+ 106   1        if(dat3 > 30)
+ 107   1          dat3 = 0;
+ 108   1        
+ 109   1        Write_24C02(0x01, dat1);
+ 110   1        DelaySMG(1000);
+ 111   1        Write_24C02(0x03, dat2);
+ 112   1        DelaySMG(1000);
+ 113   1        Write_24C02(0x05, dat3);
+ 114   1        DelaySMG(1000);
+ 115   1      }
+ 116          
+C51 COMPILER V9.54   MAIN                                                                  04/07/2022 21:41:10 PAGE 3   
+
+ 117          void DisplaySMG_24C02()
+ 118          {
+ 119   1        DisplaySMG_Bit(0, SMG_duanma[dat1/10]);
+ 120   1        DelaySMG(500);
+ 121   1        DisplaySMG_Bit(1, SMG_duanma[dat1%10]);
+ 122   1        DelaySMG(500);
+ 123   1        DisplaySMG_Bit(2, SMG_duanma[16]);
+ 124   1        DelaySMG(500);
+ 125   1        
+ 126   1        DisplaySMG_Bit(3, SMG_duanma[dat2/10]);
+ 127   1        DelaySMG(500);
+ 128   1        DisplaySMG_Bit(4, SMG_duanma[dat2%10]);
+ 129   1        DelaySMG(500);
+ 130   1        DisplaySMG_Bit(5, SMG_duanma[16]);
+ 131   1        
+ 132   1        DelaySMG(500);
+ 133   1        DisplaySMG_Bit(6, SMG_duanma[dat3/10]);
+ 134   1        DelaySMG(500);
+ 135   1        DisplaySMG_Bit(7, SMG_duanma[dat3%10]); 
+ 136   1        DelaySMG(500);
+ 137   1       
+ 138   1      }
+ 139          
+ 140          main()
+ 141          {
+ 142   1        InitSystem();
+ 143   1        XBYTE[0x8000] = 0xFF;
+ 144   1        XBYTE[0xA000] = 0x00;
+ 145   1        Read_Write();
+ 146   1        while(1)
+ 147   1        {
+ 148   2          DisplaySMG_24C02();
+ 149   2        }
+ 150   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    428    ----
+   CONSTANT SIZE    =     18    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

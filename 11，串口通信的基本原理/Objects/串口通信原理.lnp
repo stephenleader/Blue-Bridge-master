@@ -1,0 +1,3 @@
+".\Objects\串口基础.obj" 
+TO ".\Objects\串口通信原理" 
+PRINT(".\Listings\串口通信原理.m51")

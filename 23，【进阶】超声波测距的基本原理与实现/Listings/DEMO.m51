@@ -1,0 +1,250 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/07/2022  22:19:44  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\X64\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\DEMO PRINT (.\Listings\DEMO.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  D:\KEIL5\X64\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\KEIL5\X64\C51\LIB\C51S.LIB (?C?IMUL)
+  D:\KEIL5\X64\C51\LIB\C51S.LIB (?C?UIDIV)
+  D:\KEIL5\X64\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\DEMO (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?MAIN
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     0073H     UNIT         ?PR?DISPLAY_DISTANCE?MAIN
+            CODE    08FFH     0067H     UNIT         ?C?LIB_CODE
+            CODE    0966H     004CH     UNIT         ?PR?MEASURE_DISTANCE?MAIN
+            CODE    09B2H     001BH     UNIT         ?PR?_DISPLAYSMG_BIT?MAIN
+            CODE    09CDH     0015H     UNIT         ?PR?_DELAYSMG?MAIN
+            CODE    09E2H     0012H     UNIT         ?CO?MAIN
+            CODE    09F4H     0011H     UNIT         ?PR?SEND_WAVE?MAIN
+            CODE    0A05H     000EH     UNIT         ?PR?_DELAY?MAIN
+            CODE    0A13H     000AH     UNIT         ?PR?MAIN?MAIN
+            CODE    0A1DH     0007H     UNIT         ?PR?DELAY12US?MAIN
+            CODE    0A24H     0005H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\DEMO (MAIN)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN
+  +--> ?PR?MEASURE_DISTANCE?MAIN
+  +--> ?PR?_DELAY?MAIN
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2022  22:19:44  PAGE 2
+
+
+?PR?MEASURE_DISTANCE?MAIN
+  +--> ?PR?SEND_WAVE?MAIN
+
+?PR?SEND_WAVE?MAIN
+  +--> ?PR?DELAY12US?MAIN
+
+?PR?_DELAY?MAIN
+  +--> ?PR?DISPLAY_DISTANCE?MAIN
+
+?PR?DISPLAY_DISTANCE?MAIN
+  +--> ?CO?MAIN
+  +--> ?PR?_DELAYSMG?MAIN
+
+?PR?_DELAYSMG?MAIN
+  +--> ?PR?_DISPLAYSMG_BIT?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\DEMO (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  C:09F4H         PUBLIC        Send_Wave
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0A13H         PUBLIC        main
+  B:0090H.1       PUBLIC        RX
+  B:0090H.0       PUBLIC        TX
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0A1DH         PUBLIC        Delay12us
+  C:09E2H         PUBLIC        SMG_duanma
+  C:09B2H         PUBLIC        _DisplaySMG_Bit
+  B:0088H.7       PUBLIC        TF1
+  D:008DH         PUBLIC        TH1
+  D:0008H         PUBLIC        distance
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  C:09D7H         PUBLIC        _DelaySMG
+  C:0966H         PUBLIC        Measure_Distance
+  D:00C8H         PUBLIC        T2CON
+  C:088CH         PUBLIC        Display_Distance
+  C:0A05H         PUBLIC        _Delay
+  D:00D0H         PUBLIC        PSW
+  C:09D0H         SYMBOL        L?0032
+  -------         PROC          L?0031
+  -------         ENDPROC       L?0031
+  C:09D0H         SYMBOL        L?0032
+  -------         PROC          _DELAYSMG
+  D:0006H         SYMBOL        t
+  C:09D7H         LINE#         41
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2022  22:19:44  PAGE 3
+
+
+  C:09D7H         LINE#         42
+  C:09D7H         LINE#         43
+  C:09E1H         LINE#         44
+  -------         ENDPROC       _DELAYSMG
+  -------         PROC          _DISPLAYSMG_BIT
+  D:0007H         SYMBOL        pos
+  D:0005H         SYMBOL        value
+  C:09B2H         LINE#         46
+  C:09B2H         LINE#         47
+  C:09B2H         LINE#         48
+  C:09B8H         LINE#         49
+  C:09C7H         LINE#         50
+  C:09CCH         LINE#         51
+  -------         ENDPROC       _DISPLAYSMG_BIT
+  -------         PROC          DISPLAY_DISTANCE
+  C:088CH         LINE#         53
+  C:088CH         LINE#         54
+  C:088CH         LINE#         55
+  C:0896H         LINE#         56
+  C:0896H         LINE#         57
+  C:089EH         LINE#         58
+  C:089EH         LINE#         59
+  C:08A0H         LINE#         61
+  C:08A0H         LINE#         62
+  C:08B7H         LINE#         63
+  C:08BAH         LINE#         64
+  C:08DEH         LINE#         65
+  C:08E1H         LINE#         66
+  C:08FBH         LINE#         67
+  C:08FEH         LINE#         68
+  C:08FEH         LINE#         69
+  -------         ENDPROC       DISPLAY_DISTANCE
+  -------         PROC          DELAY12US
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:0A1DH         LINE#         71
+  C:0A1DH         LINE#         72
+  C:0A1DH         LINE#         75
+  C:0A1EH         LINE#         76
+  C:0A1FH         LINE#         77
+  C:0A21H         LINE#         78
+  C:0A23H         LINE#         79
+  -------         ENDPROC       DELAY12US
+  -------         PROC          SEND_WAVE
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:09F4H         LINE#         81
+  C:09F4H         LINE#         82
+  C:09F4H         LINE#         84
+  C:09F6H         LINE#         85
+  C:09F6H         LINE#         86
+  C:09F8H         LINE#         87
+  C:09FBH         LINE#         88
+  C:09FDH         LINE#         89
+  C:0A00H         LINE#         90
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2022  22:19:44  PAGE 4
+
+
+  C:0A04H         LINE#         91
+  -------         ENDPROC       SEND_WAVE
+  -------         PROC          MEASURE_DISTANCE
+  -------         DO            
+  D:0004H         SYMBOL        time
+  -------         ENDDO         
+  C:0966H         LINE#         93
+  C:0966H         LINE#         94
+  C:0966H         LINE#         95
+  C:0969H         LINE#         97
+  C:096CH         LINE#         98
+  C:096EH         LINE#         99
+  C:0970H         LINE#         101
+  C:0973H         LINE#         102
+  C:0975H         LINE#         103
+  C:097BH         LINE#         104
+  C:097DH         LINE#         106
+  C:0980H         LINE#         107
+  C:0980H         LINE#         108
+  C:0984H         LINE#         109
+  C:0989H         LINE#         110
+  C:09A8H         LINE#         111
+  C:09A9H         LINE#         113
+  C:09A9H         LINE#         114
+  C:09ABH         LINE#         115
+  C:09B1H         LINE#         116
+  C:09B1H         LINE#         117
+  -------         ENDPROC       MEASURE_DISTANCE
+  -------         PROC          _DELAY
+  D:0003H         SYMBOL        n
+  C:0A05H         LINE#         119
+  C:0A07H         LINE#         120
+  C:0A07H         LINE#         121
+  C:0A0DH         LINE#         122
+  C:0A0DH         LINE#         123
+  C:0A10H         LINE#         124
+  C:0A12H         LINE#         125
+  -------         ENDPROC       _DELAY
+  -------         PROC          MAIN
+  C:0A13H         LINE#         127
+  C:0A13H         LINE#         128
+  C:0A13H         LINE#         129
+  C:0A13H         LINE#         130
+  C:0A13H         LINE#         131
+  C:0A16H         LINE#         132
+  C:0A1BH         LINE#         133
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        ?C?IMUL
+  C:08FFH         PUBLIC        ?C?IMUL
+  -------         ENDMOD        ?C?IMUL
+
+  -------         MODULE        ?C?UIDIV
+  C:0911H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/07/2022  22:19:44  PAGE 5
+
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0135H BYTE (15%) *
+******************************************************************************
+
+Program Size: data=11.0 xdata=0 code=556
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

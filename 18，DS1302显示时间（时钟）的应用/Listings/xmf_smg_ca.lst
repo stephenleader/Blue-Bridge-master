@@ -1,0 +1,46 @@
+C51 COMPILER V9.54   XMF_SMG_CA                                                            04/05/2022 22:58:54 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE XMF_SMG_CA
+OBJECT MODULE PLACED IN .\Objects\xmf_smg_ca.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE xmf_smg_ca.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
+                    -ngs\xmf_smg_ca.lst) TABS(2) OBJECT(.\Objects\xmf_smg_ca.obj)
+
+line level    source
+
+   1          #include "absacc.h"
+   2          //底层公共部分
+   3          
+   4          void DelaySMG(unsigned int t)
+   5          {
+   6   1        while(t--);
+   7   1      }
+   8          
+   9          void DisplaySMG_Bit(unsigned char pos, unsigned char dat)
+  10          {
+  11   1        //数码管调用
+  12   1        XBYTE[0xe000] = 0xff;//消隐
+  13   1        XBYTE[0xc000] = 0x01 << pos;//左移
+  14   1        XBYTE[0xe000] = dat;//所显示的内容
+  15   1      }
+  16          
+  17          //设置段码值，是全部数码管有效
+  18          void Display_All(unsigned char dat)
+  19          {
+  20   1        XBYTE[0xc000] = 0xff;
+  21   1        XBYTE[0xe000] = dat;
+  22   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     50    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

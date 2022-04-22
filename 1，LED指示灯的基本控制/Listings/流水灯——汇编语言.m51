@@ -1,0 +1,56 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        03/27/2022  22:50:20  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\KEIL5\X64\C51\BIN\BL51.EXE .\Objects\Asm1.obj TO .\Objects\Á÷Ë®µÆ¡ª¡ª»ã±àÓïÑÔ PRINT (.\Listings\Á÷Ë®µÆ¡ª¡ª»ã±àÓïÑÔ.m5
+>> 1)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Asm1.obj (ASM1)
+
+
+LINK MAP OF MODULE:  .\Objects\Á÷Ë®µÆ¡ª¡ª»ã±àÓïÑÔ (ASM1)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0112H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Á÷Ë®µÆ¡ª¡ª»ã±àÓïÑÔ (ASM1)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ASM1
+  C:0100H         SYMBOL        DELAY
+  C:0102H         SYMBOL        L1
+  C:010BH         SYMBOL        LOOP
+  D:0080H         SYMBOL        P0
+  C:0109H         SYMBOL        START
+  C:0000H         LINE#         2
+  C:0100H         LINE#         4
+  C:0102H         LINE#         5
+  C:0104H         LINE#         6
+  C:0106H         LINE#         7
+  C:0108H         LINE#         8
+  C:0109H         LINE#         11
+  C:010BH         LINE#         12
+  C:010DH         LINE#         13
+  C:010FH         LINE#         14
+  C:0110H         LINE#         15
+  -------         ENDMOD        ASM1
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0014H BYTE ( 0%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=274
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

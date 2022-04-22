@@ -1,0 +1,4 @@
+".\Objects\MAIN.obj",
+".\Objects\iic.obj" 
+TO ".\Objects\demo" 
+PRINT(".\Listings\demo.m51")

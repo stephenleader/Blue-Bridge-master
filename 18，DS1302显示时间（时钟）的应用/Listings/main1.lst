@@ -1,0 +1,96 @@
+C51 COMPILER V9.54   MAIN1                                                                 04/05/2022 22:58:53 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN1
+OBJECT MODULE PLACED IN .\Objects\main1.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE main1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\m
+                    -ain1.lst) TABS(2) OBJECT(.\Objects\main1.obj)
+
+line level    source
+
+   1          #include "reg52.h"
+   2          #include "ds1302.h"
+   3          #include "xmf_smg_ca.h"
+   4          
+   5          //读密和解密，写和读的相关物理地址
+   6          unsigned char Write_DS1302_adrr[7] = {0x80,0x82,0x84,0x86,0x88,0x8a,0x8c};
+   7          unsigned char Read_DS1302_adrr[7] = {0x81,0x83,0x85,0x87,0x89,0x8b,0x8d};
+   8          //20年4月18日，周六，22点59分24秒
+   9          unsigned char Timer[7] = {0x24,0x59,0x23,0x18,0x04,0x06,0x20};
+  10          //miao-fen-xiaoshi-riqi-...
+  11          void DS1302_Config()
+  12          {
+  13   1        char i;
+  14   1        Write_Ds1302_Byte(0x8e,0x00);//0x8e表示可以写入数据，0x00写入数据
+  15   1        for ( i = 0 ; i < 7 ;i++ )
+  16   1        {
+  17   2          Write_Ds1302_Byte(Write_DS1302_adrr[i],Timer[i]);
+  18   2        }
+  19   1        Write_Ds1302_Byte(0x8e,0x80);
+  20   1      }
+  21          
+  22          void Read_DS1302_Timer()
+  23          {
+  24   1        char i;
+  25   1        for ( i = 0 ; i < 7 ; i++ )
+  26   1        {
+  27   2          Timer[i] = Read_Ds1302_Byte( Read_DS1302_adrr[i]);
+  28   2        }
+  29   1      }
+  30          
+  31          void Display_DS1302()
+  32          {
+  33   1        //时间小时的十位（小时）
+  34   1        DisplaySMG_Bit(0, SMGNoDot_CA[Timer[2] / 16]);
+  35   1        DelaySMG(100);
+  36   1        DisplaySMG_Bit(1, SMGNoDot_CA[Timer[2] % 16]);
+  37   1        DelaySMG(100);
+  38   1        
+  39   1        //-
+  40   1        DisplaySMG_Bit(2, 0xbf);
+  41   1        DelaySMG(100);
+  42   1        
+  43   1        //时间的个位（分钟）
+  44   1        DisplaySMG_Bit(3, SMGNoDot_CA[Timer[1] / 16]);
+  45   1        DelaySMG(100);
+  46   1        DisplaySMG_Bit(4, SMGNoDot_CA[Timer[1] % 16]);
+  47   1        DelaySMG(100);
+  48   1        
+  49   1        //-
+  50   1        DisplaySMG_Bit(5, 0xbf);
+  51   1        DelaySMG(100);
+  52   1        
+  53   1        //秒
+  54   1        DisplaySMG_Bit(6, SMGNoDot_CA[Timer[0] / 16]);
+C51 COMPILER V9.54   MAIN1                                                                 04/05/2022 22:58:53 PAGE 2   
+
+  55   1        DelaySMG(100);
+  56   1        DisplaySMG_Bit(7, SMGNoDot_CA[Timer[0] % 16]);
+  57   1        DelaySMG(100);
+  58   1        
+  59   1        Display_All(0xff);
+  60   1      }
+  61          
+  62          void main()
+  63          {
+  64   1        DS1302_Config();
+  65   1        while(1)
+  66   1        {
+  67   2          Read_DS1302_Timer();
+  68   2          Display_DS1302();
+  69   2        }
+  70   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    250    ----
+   CONSTANT SIZE    =     20    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     21       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

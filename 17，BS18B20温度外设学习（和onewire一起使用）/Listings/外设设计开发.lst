@@ -1,0 +1,147 @@
+C51 COMPILER V9.54   ____________                                                          04/04/2022 12:12:12 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE ____________
+OBJECT MODULE PLACED IN .\Objects\Õ‚…Ë…Ëº∆ø™∑¢.obj
+COMPILER INVOKED BY: D:\Keil5\x64\C51\BIN\C51.EXE Õ‚…Ë…Ëº∆ø™∑¢.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Lis
+                    -tings\Õ‚…Ë…Ëº∆ø™∑¢.lst) TABS(2) OBJECT(.\Objects\Õ‚…Ë…Ëº∆ø™∑¢.obj)
+
+line level    source
+
+   1          //◊¢“‚ø¥DS18B20Œ¬∂»◊™ªª∫Õ∂¡»°¡˜≥Ã.png
+   2          
+   3          #include "reg52.h"
+   4          #include "absacc.h"
+   5          #include "onewire.h"
+   6          
+   7          //…Ë÷√Œ¬∂»±‰¡ø
+   8          unsigned int temp = 0;
+   9          
+  10          //0~9(√ª”–µ„£©
+  11          unsigned char code SMGNoDot_CA[10]={
+  12              0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,
+  13              0x80,0x90};
+  14          
+  15          //0.~9.
+  16          unsigned char code SMGDot_CA[10]={
+  17              0x40,0x79,0x24,0x30,0x19,0x12,0x02,0x78,
+  18              0x00,0x10}; 
+  19          
+  20          void DelaySMG(unsigned int t)
+  21          {
+  22   1        while(t--);
+  23   1      }
+  24          
+  25          void DisplaySMG_Bit(unsigned char pos, unsigned char dat)
+  26          {
+  27   1        // ˝¬Îπ‹µ˜”√
+  28   1        XBYTE[0xe000] = 0xff;//œ˚“˛
+  29   1        XBYTE[0xc000] = 0x01 << pos;//◊Û“∆
+  30   1        XBYTE[0xe000] = dat;//À˘œ‘ æµƒƒ⁄»›
+  31   1      }
+  32          
+  33          //…Ë÷√∂Œ¬Î÷µ£¨ «»´≤ø ˝¬Îπ‹”––ß
+  34          void Display_All(unsigned char dat)
+  35          {
+  36   1        XBYTE[0xc000] = 0xff;
+  37   1        XBYTE[0xe000] = dat;
+  38   1      }
+  39          
+  40          //Ω®’˚–Œ ˝æ›
+  41          //567
+  42          //  567 / 100 = 5 = S
+  43          //  567 % 100 = 67 / 10 = 6 
+  44          //  567 % 10 = 7
+  45          void DisplaySMG_Temp()
+  46          {
+  47   1        DisplaySMG_Bit(7,SMGNoDot_CA[temp % 10]);  //∏ˆŒª
+  48   1        DelaySMG(100);
+  49   1        DisplaySMG_Bit(6,SMGDot_CA[(temp % 100) / 10]);  // ÆŒª
+  50   1        DelaySMG(100);
+  51   1        DisplaySMG_Bit(5,SMGNoDot_CA[temp / 100]);    //∞ŸŒª
+  52   1        DelaySMG(100);
+  53   1        
+  54   1        
+C51 COMPILER V9.54   ____________                                                          04/04/2022 12:12:12 PAGE 2   
+
+  55   1        DisplaySMG_Bit(4,0xff); 
+  56   1        DelaySMG(100);
+  57   1        DisplaySMG_Bit(3,0xff); 
+  58   1        DelaySMG(100);
+  59   1        DisplaySMG_Bit(2,0xff); 
+  60   1        DelaySMG(100);
+  61   1        DisplaySMG_Bit(1,0xff); 
+  62   1        DelaySMG(100);
+  63   1        DisplaySMG_Bit(0,0xff); 
+  64   1        DelaySMG(100);
+  65   1        
+  66   1        Display_All(0xff);
+  67   1      
+  68   1      }
+  69          
+  70          // ˝¬Îπ‹∂ØÃ¨—› æµƒ—” ±
+  71          void Delay(unsigned int t)
+  72          {
+  73   1        while(t--)
+  74   1        {
+  75   2          DisplaySMG_Temp();
+  76   2        }
+  77   1      }
+  78          
+  79          //onewire°£h…˘√˜µƒ∫Ø ˝“™µ˜”√
+  80          //∂¡onwire.h
+  81          //≤Èø¥∏˘ƒø¬ºœ¬µƒpng
+  82          //◊¢“‚◊™ªªµƒ≤Ω÷Ë
+  83          void Read_DS18B20_temp()
+  84          {
+  85   1        unsigned char LSB,MSB;//low 8 bit ,high 8 bit
+  86   1        
+  87   1        init_ds18b20();
+  88   1        Write_DS18B20(0xcc);
+  89   1        Write_DS18B20(0x44);
+  90   1        
+  91   1        Delay(1000);
+  92   1        
+  93   1        init_ds18b20();
+  94   1        Write_DS18B20(0xcc);
+  95   1        Write_DS18B20(0xbe);
+  96   1        
+  97   1        LSB = Read_DS18B20();
+  98   1        MSB = Read_DS18B20();
+  99   1        
+ 100   1        temp = MSB;
+ 101   1        temp = (temp << 8) | LSB;  //16ŒªŒ¬∂» ˝æ›
+ 102   1        
+ 103   1        if((temp & 0xf800) == 0x0000)  //0…œπ§◊˜
+ 104   1        {
+ 105   2          temp >>= 4;//–° ˝“∆◊ﬂ
+ 106   2          temp = temp * 10;
+ 107   2          temp = temp + (LSB & 0x0f) * 0.625;//∑≈¥Û Æ±∂£¨∑÷±Ê¬  «0£°£0625
+ 108   2        }
+ 109   1      }
+ 110          
+ 111          void main()
+ 112          {
+ 113   1        XBYTE[8000] = 0x00;//√µ∆
+ 114   1        while(1)
+ 115   1        {
+ 116   2          Read_DS18B20_temp();
+C51 COMPILER V9.54   ____________                                                          04/04/2022 12:12:12 PAGE 3   
+
+ 117   2          DisplaySMG_Temp();
+ 118   2        }
+ 119   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    365    ----
+   CONSTANT SIZE    =     20    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

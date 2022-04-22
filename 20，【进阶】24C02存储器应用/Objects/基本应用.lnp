@@ -1,0 +1,4 @@
+".\Objects\main.obj",
+".\Objects\iic.obj" 
+TO ".\Objects\基本应用" 
+PRINT(".\Listings\基本应用.m51")

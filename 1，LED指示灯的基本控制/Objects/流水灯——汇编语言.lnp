@@ -1,0 +1,3 @@
+".\Objects\Asm1.obj" 
+TO ".\Objects\流水灯——汇编语言" 
+PRINT(".\Listings\流水灯——汇编语言.m51")
